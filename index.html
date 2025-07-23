@@ -208,8 +208,15 @@
       .left, .right {
         width: 100%;
       }
+      
+  .dash {
+  font-size: 2rem;
+  line-height: 50px;
+  color: #000;
+  user-select: none;
+}
 
- 
+
   </style>
 </head>
 <body style="display: flex; flex-direction: column; min-height: 100vh;">
@@ -278,16 +285,19 @@
     </p>
 
     <div class="code-inputs">
-      <input type="text" maxlength="1" inputmode="numeric">
-      <input type="text" maxlength="1" inputmode="numeric">
-      <input type="text" maxlength="1" inputmode="numeric">
-      <input type="text" maxlength="1" inputmode="numeric">
-      <input type="text" maxlength="1" inputmode="numeric">
-      <input type="text" maxlength="1" inputmode="numeric">
-      <input type="text" maxlength="1" inputmode="numeric">
-      <input type="text" maxlength="1" inputmode="numeric">
-      <input type="text" maxlength="1" inputmode="numeric">
-    </div>
+  <input type="text" maxlength="1" inputmode="numeric">
+  <input type="text" maxlength="1" inputmode="numeric">
+  <input type="text" maxlength="1" inputmode="numeric">
+  <span class="dash">-</span>
+  <input type="text" maxlength="1" inputmode="numeric">
+  <input type="text" maxlength="1" inputmode="numeric">
+  <input type="text" maxlength="1" inputmode="numeric">
+  <span class="dash">-</span>
+  <input type="text" maxlength="1" inputmode="numeric">
+  <input type="text" maxlength="1" inputmode="numeric">
+  <input type="text" maxlength="1" inputmode="numeric">
+</div>
+
 
     <button disabled>ENVIAR</button>
 
