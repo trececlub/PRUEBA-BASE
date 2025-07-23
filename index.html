@@ -149,11 +149,28 @@
 </head>
 <body>
 
-  <!-- Barra superior -->
-  <div class="top-bar">
-    <div>Texto informativo aquí</div>
-    <div class="menu-icon">☰</div>
+  <div style="background-color: black; color: white; padding: 6px 16px; font-family: sans-serif; display: flex; align-items: center; font-size: 14px;">
+  <span style="margin-right: 10px;">Información importante para los visitantes</span>
+  
+  <!-- Botón desplegable -->
+  <div style="position: relative;">
+    <button onclick="toggleDropdown()" style="background: none; border: none; color: #ffd700; cursor: pointer; font-weight: bold;">
+      Revisa aquí ▼
+    </button>
+
+    <!-- Contenido desplegable -->
+    <div id="dropdownContent" style="display: none; position: absolute; top: 100%; left: 0; background-color: #222; color: white; padding: 10px; width: 250px; box-shadow: 0 4px 8px rgba(0,0,0,0.3); z-index: 10;">
+      Aquí puedes encontrar información relevante sobre cómo funciona el sistema de infracciones y cómo consultar tu estado actual.
+    </div>
   </div>
+</div>
+
+<script>
+  function toggleDropdown() {
+    const dropdown = document.getElementById("dropdownContent");
+    dropdown.style.display = dropdown.style.display === "none" ? "block" : "none";
+  }
+</script>
 
   <!-- Header -->
   <header>
