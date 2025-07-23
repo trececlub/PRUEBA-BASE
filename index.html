@@ -130,10 +130,9 @@
 .code-inputs input:focus {
   border-color: #007bff;
 }
-
+    
 .right button {
-  display: block;
-  margin: 0 auto;
+  width: 410px; /* Igual al ancho total de las 9 casillas más los espacios */
   padding: 0.8rem;
   background-color: #ccc;
   border: none;
@@ -143,8 +142,7 @@
   cursor: not-allowed;
   border-radius: 5px;
   transition: background-color 0.3s ease;
-  width: calc(40px * 9 + 10px * 8); /* 9 inputs de 40px + 8 espacios de 10px */
-  max-width: 100%;
+  margin-bottom: 1rem;
 }
 
 .right button:enabled {
