@@ -180,7 +180,9 @@
 
     @media (max-width: 768px) {
       .main-section {
-        flex-direction: column;
+  display: flex;
+  min-height: 400px;
+  flex: 1;
       }
 
       .left, .right {
@@ -190,7 +192,7 @@
  
   </style>
 </head>
-<body>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
 
   <div style="background-color: black; color: white; padding: 6px 16px; font-family: sans-serif; display: flex; align-items: center; font-size: 14px;">
   <span style="margin-right: 10px;">Información importante para los visitantes</span>
@@ -270,25 +272,29 @@
   </p>
 </div>
 
-  <!-- Footer -->
-  <footer>
-    <div class="footer-main">Sistema Automatizado de Información</div>
-    <div class="footer-bottom">© 2025 Todos los derechos reservados. Este sitio no pertenece al gobierno de los EE. UU.</div>
-  </footer>
+<footer style="background-color: #000; color: #d4af37; padding: 2rem 1rem; font-family: 'Inter', sans-serif;">
+  <div style="max-width: 800px; margin: auto; text-align: center;">
+    <!-- Logo centrado -->
+    <img src="logo.png" alt="Club Trece Logo" style="width: 80px; margin-bottom: 1rem;" />
+    
+    <!-- Texto del footer -->
+    <p style="margin: 0;">&copy; 2025 Club Trece. Todos los derechos reservados.</p>
+  </div>
+</footer>
 
-  <script>
-    const form = document.getElementById('otp-form');
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const digits = Array.from(form.querySelectorAll('input'))
-        .map(input => input.value)
-        .join('');
-      if (digits.length === 9) {
-        window.location.href = `infraccion.html?codigo=${digits}`;
-      } else {
-        alert('Por favor ingresa los 9 dígitos.');
-      }
-    });
-  </script>
+ <script>
+  const form = document.getElementById('otp-form');
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const digits = Array.from(form.querySelectorAll('input'))
+      .map(input => input.value)
+      .join('');
+    if (digits.length === 9) {
+      window.location.href = `infraccion.html?codigo=${digits}`;
+    } else {
+      alert('Por favor ingresa los 9 dígitos.');
+    }
+  });
+</script>
 </body>
 </html>
