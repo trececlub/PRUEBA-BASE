@@ -157,6 +157,25 @@
   align-items: flex-start;
   gap: 8px;
   }
+    .right-side {
+  background: linear-gradient(to bottom, #0a2a43, #09223c); /* Fondo azul */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  width: 50%;
+  min-height: 100vh;
+}
+
+.white-box {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+  max-width: 600px;
+  width: 100%;
+  color: #000;
+}
     /* Footer */
     footer {
       margin-top: auto;
@@ -248,29 +267,34 @@
 </div>
 
     <!-- Lado derecho -->
-    <div class="right">
-  <h2>Ingrese su número de registro de Extranjero</h2>
-  <p><strong>Número de registro de extranjero</strong> <span class="required">*Obligatorio</span> <a href="#" class="help">¿Qué es un número de inmigrante extranjero?</a></p>
+    <div class="right-side">
+  <div class="white-box">
+    <h2>Ingrese su número de registro de Extranjero</h2>
+    <p>
+      <strong>Número de registro de extranjero</strong>
+      <span class="required">*Obligatorio</span>
+      <a href="#" class="help">¿Qué es un número de inmigrante extranjero?</a>
+    </p>
 
-  <div class="code-inputs">
-    <input type="text" maxlength="1" inputmode="numeric">
-    <input type="text" maxlength="1" inputmode="numeric">
-    <input type="text" maxlength="1" inputmode="numeric">
-    <input type="text" maxlength="1" inputmode="numeric">
-    <input type="text" maxlength="1" inputmode="numeric">
-    <input type="text" maxlength="1" inputmode="numeric">
-    <input type="text" maxlength="1" inputmode="numeric">
-    <input type="text" maxlength="1" inputmode="numeric">
-    <input type="text" maxlength="1" inputmode="numeric">
+    <div class="code-inputs">
+      <input type="text" maxlength="1" inputmode="numeric">
+      <input type="text" maxlength="1" inputmode="numeric">
+      <input type="text" maxlength="1" inputmode="numeric">
+      <input type="text" maxlength="1" inputmode="numeric">
+      <input type="text" maxlength="1" inputmode="numeric">
+      <input type="text" maxlength="1" inputmode="numeric">
+      <input type="text" maxlength="1" inputmode="numeric">
+      <input type="text" maxlength="1" inputmode="numeric">
+      <input type="text" maxlength="1" inputmode="numeric">
+    </div>
+
+    <button disabled>ENVIAR</button>
+
+    <p class="info">
+      <span class="icon">ℹ️</span>
+      La información sobre el caso que aparece en este sistema automatizado, se provee apenas para su conveniencia. Los documentos que se le emitan a usted o a su representante por el tribunal de inmigración o el tribunal de apelaciones, son los únicos de carácter oficial relacionado a su caso.
+    </p>
   </div>
-
-  <button disabled>ENVIAR</button>
-
-  <p class="info">
-    <span class="icon">ℹ️</span>
-    La información sobre el caso que aparece en este sistema automatizado, se provee a penas para su conveniencia. Los documentos que se le emitan a usted o a su representante por el tribunal de inmigración o el tribunal de apelaciones, son los únicos de carácter oficial relacionado a su caso.
-  </p>
-</div>
   </section>
 
 </footer>
