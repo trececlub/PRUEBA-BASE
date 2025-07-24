@@ -204,15 +204,14 @@
       font-size: 0.8rem;
     }
 
-    @media (max-width: 768px) {
-      .main-section {
-  display: flex;
-  min-height: 400px;
-  flex: 1;
-      }
+  @media (max-width: 768px) {
+  .main-content {
+    flex-direction: column;
+  }
 
-      .left, .right {
-        width: 100%;
+  .left-column, .right-column {
+    width: 100%;
+    max-width: 100%;
     }
       
   .code-separator {
