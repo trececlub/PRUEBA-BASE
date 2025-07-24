@@ -305,10 +305,10 @@
   <input type="text" maxlength="1" inputmode="numeric">
 </div>
 
-<button disabled style="width: 460px; padding: 12px; font-size: 16px; font-family: 'Inter', Arial, sans-serif; cursor: not-allowed; background-color: #ccc; color: #fff; border: none; border-radius: 6px; transition: background-color 0.3s ease;">
-  ENVIAR
-</button>
-
+  <button disabled style="width: 460px; padding: 12px; font-size: 16px; font-family: 'Inter', Arial, sans-serif; cursor: not-allowed; background-color: #ccc; color: #fff; border: none; border-radius: 6px; transition: background-color 0.3s ease;">
+    ENVIAR
+  </button>
+</div>
 
     <p class="info">
       <span class="icon">ℹ️</span>
@@ -446,21 +446,21 @@
   function checkInputs() {
     const allFilled = Array.from(inputs).every(input => input.value.trim().length === 1);
     button.disabled = !allFilled;
+    button.style.backgroundColor = allFilled ? '#000' : '#ccc';
+    button.style.cursor = allFilled ? 'pointer' : 'not-allowed';
   }
 
-  inputs.forEach(input => {
+  inputs.forEach((input, index) => {
     input.addEventListener('input', () => {
       if (input.value.length === 1) {
-        const nextInput = input.nextElementSibling;
-        if (nextInput && nextInput.tagName === 'INPUT') {
-          nextInput.focus();
-        }
+        let nextInput = inputs[index + 1];
+        if (nextInput) nextInput.focus();
       }
       checkInputs();
     });
   });
 
-  checkInputs(); // Verifica al cargar la página
+  checkInputs(); // Ejecutar al cargar
 </script>
 </body>
 </html>
