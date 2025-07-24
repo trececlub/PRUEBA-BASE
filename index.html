@@ -132,8 +132,10 @@
 }
     
 .right button {
-  width: 460px; 
-  padding: 0.8rem;
+  width: fit-content;
+  display: block;
+  margin: 0 auto;
+  padding: 0.8rem 3rem;
   background-color: #ccc;
   border: none;
   color: white;
@@ -142,7 +144,6 @@
   cursor: not-allowed;
   border-radius: 5px;
   transition: background-color 0.3s ease;
-  margin-bottom: 1rem;
 }
 
 .right button:enabled {
@@ -213,13 +214,9 @@
         width: 100%;
     }
       
-  .dash {
-  display: inline-block;
-  width: 10px;
-  text-align: center;
+  .code-separator {
   color: transparent;
   font-size: 2rem;
-  line-height: 50px;
   user-select: none;
 }
   </style>
@@ -293,11 +290,11 @@
   <input type="text" maxlength="1" inputmode="numeric">
   <input type="text" maxlength="1" inputmode="numeric">
   <input type="text" maxlength="1" inputmode="numeric">
-  <span class="dash">-</span>
+  <span class="code-separator">-</span>
   <input type="text" maxlength="1" inputmode="numeric">
   <input type="text" maxlength="1" inputmode="numeric">
   <input type="text" maxlength="1" inputmode="numeric">
-  <span class="dash">-</span>
+  <span class="code-separator">-</span>
   <input type="text" maxlength="1" inputmode="numeric">
   <input type="text" maxlength="1" inputmode="numeric">
   <input type="text" maxlength="1" inputmode="numeric">
