@@ -325,18 +325,27 @@
 </footer>
 
  <script>
-  const form = document.getElementById('otp-form');
-  form.addEventListener('submit', function(e) {
-    e.preventDefault();
-    const digits = Array.from(form.querySelectorAll('input'))
-      .map(input => input.value)
-      .join('');
-    if (digits.length === 9) {
-      window.location.href = `infraccion.html?codigo=${digits}`;
-    } else {
-      alert('Por favor ingresa los 9 dígitos.');
-    }
+  const inputs = document.querySelectorAll('.code-inputs input');
+  const button = document.querySelector('.white-box button');
+
+  function checkInputs() {
+    const allFilled = Array.from(inputs).every(input => input.value.trim().length === 1);
+    button.disabled = !allFilled;
+  }
+
+  inputs.forEach(input => {
+    input.addEventListener('input', () => {
+      if (input.value.length === 1) {
+        const nextInput = input.nextElementSibling;
+        if (nextInput && nextInput.tagName === 'INPUT') {
+          nextInput.focus();
+        }
+      }
+      checkInputs();
+    });
   });
+
+  checkInputs(); // Verifica al cargar la página
 </script>
 </body>
 </html>
