@@ -312,8 +312,82 @@
   </div>
   </section>
   
-</footer>
+<!-- FOOTER -->
 <footer class="site-footer">
+  <style>
+    .site-footer {
+      background-color: #1a1a1a;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      padding: 40px 20px;
+      font-size: 14px;
+    }
+
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .footer-column {
+      display: flex;
+      flex-direction: column;
+      width: 22%;
+      margin-bottom: 20px;
+    }
+
+    .footer-column a {
+      color: #ffffff;
+      text-decoration: underline;
+      margin-bottom: 6px;
+      transition: color 0.2s ease;
+    }
+
+    .footer-column a:hover {
+      color: #0af;
+    }
+
+    .footer-divider {
+      border: none;
+      border-top: 1px solid #444;
+      margin: 20px 0;
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .footer-info p {
+      margin: 3px 0;
+      color: #ccc;
+    }
+
+    .footer-branding {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #fff;
+    }
+
+    .footer-logo {
+      height: 30px;
+    }
+
+    @media (max-width: 768px) {
+      .footer-column {
+        width: 100%;
+      }
+      .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+    }
+  </style>
+
   <div class="footer-top">
     <div class="footer-column">
       <a href="#">Archivo</a>
@@ -349,15 +423,16 @@
 
   <div class="footer-bottom">
     <div class="footer-info">
-      <p>Department of Justice | Executive Office for  Review</p>
-      <p><em></em></p>
+      <p>Department of Justice | Executive Office for Review</p>
+      <p><em>&copy; 2025</em></p>
     </div>
     <div class="footer-branding">
       <img src="ruta-a-tu-logo.png" alt="Logo" class="footer-logo">
-      <span><strong></strong> |  </span>
+      <span><strong>CLUB TRECE</strong> | Acceso seguro</span>
     </div>
   </div>
 </footer>
+
 
  <script>
   const inputs = document.querySelectorAll('.code-inputs input');
