@@ -71,19 +71,24 @@
   min-height: 45vh; /* Cada tarjeta ocupa el 45% de la altura de pantalla */
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Centra verticalmente */
-  text-align: center; /* Centra texto */
+  justify-content: space-between; /* Título abajo, contenido centrado */
 }
 
 .card h3 {
   font-size: 1.3rem;
-  margin-bottom: 15px;
   font-weight: bold;
+  align-self: flex-start; /* Alinea el título a la izquierda */
+  margin: 0; /* Quita margen superior/inferior */
 }
 
 .card p {
-  font-size: 1.1rem;
-  line-height: 1.8rem; /* Interlineado más grande */
+  font-size: 1.15rem;
+  line-height: 2rem; /* Aumenta interlineado */
+  text-align: center;
+  flex: 1; /* Ocupa el espacio central */
+  display: flex;
+  align-items: center; /* Centra verticalmente */
+  justify-content: center; /* Centra horizontalmente */
 }
 
 .card.empty {
