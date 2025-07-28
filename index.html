@@ -438,8 +438,9 @@
 
  <script>
   const inputs = document.querySelectorAll('.code-inputs input');
-  const button = document.querySelector('.white-box button');
+  const button = document.querySelector('#btnEnviar');
 
+  // Verifica que todos los inputs estén llenos
   function checkInputs() {
     const allFilled = Array.from(inputs).every(input => input.value.trim().length === 1);
     button.disabled = !allFilled;
@@ -447,6 +448,7 @@
     button.style.cursor = allFilled ? 'pointer' : 'not-allowed';
   }
 
+  // Avanza automáticamente al siguiente input
   inputs.forEach((input, index) => {
     input.addEventListener('input', () => {
       if (input.value.length === 1) {
@@ -457,7 +459,15 @@
     });
   });
 
-  checkInputs(); // Ejecutar al cargar
+  // 👉 Acción al presionar ENVIAR
+  button.addEventListener('click', () => {
+    // Juntar los 9 dígitos en un solo string
+    const codigo = Array.from(inputs).map(input => input.value).join('');
+    // Redirigir a caso.html con el código
+    window.location.href = `caso.html?codigo=${codigo}`;
+  });
+
+  checkInputs(); // Ejecuta validación al cargar
 </script>
 </body>
 </html>
