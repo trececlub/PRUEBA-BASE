@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Información del Caso</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
     body { background: #fff; color: #000; display: flex; flex-direction: column; min-height: 100vh; }
 
-    /* Barra superior */
+    /* Barra negra superior */
     .top-bar { background: #000; color: #fff; font-size: 0.8rem; padding: 6px 16px; display: flex; justify-content: space-between; align-items: center; }
 
     /* Header */
@@ -20,20 +20,67 @@
     .yellow-bar { background-color: #fcd100; padding: 20px 20px; font-family: Arial, sans-serif; }
     .yellow-bar a { text-decoration: underline; color: #000; font-weight: bold; }
 
-    /* Contenedor principal */
-    .container { max-width: 1100px; margin: auto; padding: 20px; flex: 1; }
+    /* CONTENIDO CENTRAL */
+    .content-area {
+      background: #e9f0f7;
+      padding: 30px;
+      flex: 1;
+    }
+    .breadcrumb {
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+    }
+    .breadcrumb a {
+      text-decoration: none;
+      color: #0073aa;
+      font-weight: bold;
+    }
 
-    /* Línea superior */
-    .info-line { background: #f9f9fc; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 0.95rem; }
+    .title-section {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    .title-section img {
+      width: 40px;
+      display: block;
+      margin: auto;
+    }
+    .title-section h2 {
+      font-size: 1.4rem;
+      margin: 8px 0;
+      font-weight: bold;
+    }
+    .title-section p {
+      font-size: 0.95rem;
+    }
 
-    /* Cards */
-    .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-    .card { background: #fff; border-radius: 8px; padding: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
-    .card h3 { margin-bottom: 10px; font-size: 1.1rem; }
-    .card p { margin-bottom: 6px; font-size: 0.95rem; }
+    .cards-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid #d1d1d1;
+      border-radius: 6px;
+      padding: 15px;
+      min-height: 160px;
+    }
+    .card h3 {
+      font-size: 1rem;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    .card p {
+      font-size: 0.95rem;
+      line-height: 1.4rem;
+    }
 
     @media(max-width: 768px) {
-      .cards { grid-template-columns: 1fr; }
+      .cards-container { grid-template-columns: 1fr; }
     }
 
     /* Footer */
@@ -75,54 +122,51 @@
     </div>
   </section>
 
-  <!-- Contenido central -->
-  <div class="container">
-    <!-- Línea superior -->
-    <div class="info-line">
-      <strong>Nombre:</strong> <span id="nombre"></span> |
-      <strong>Número de registro de extranjero:</strong> <span id="registro"></span> |
-      <strong>Fecha de la lista de causas:</strong> <span id="fecha"></span>
+  <!-- SECCION CENTRAL -->
+  <section class="content-area">
+    <div class="breadcrumb">
+      <a href="index.html">Inicio</a> > <span id="nombreBreadcrumb"></span>
     </div>
 
-    <!-- Cards -->
-    <div class="cards">
-      <!-- Tarjeta 1 -->
+    <div class="title-section">
+      <img src="https://img.icons8.com/ios-filled/50/000000/courthouse.png" alt="icono" />
+      <h2>Información automatizada de casos</h2>
+      <p>
+        Nombre: <strong id="nombre"></strong> | 
+        Número de registro de extranjero: <strong id="registro"></strong> | 
+        Fecha de la lista de causas: <strong id="fecha"></strong>
+      </p>
+    </div>
+
+    <div class="cards-container">
+      <!-- TARJETA 1 -->
       <div class="card">
-        <h3>📅 Próxima Audiencia</h3>
-        <p><strong>Fecha:</strong> <span id="fechaAudiencia"></span></p>
-        <p><strong>Hora:</strong> <span id="horaAudiencia"></span></p>
-        <p><strong>Tipo de corte:</strong> <span id="tipoCorte"></span></p>
-        <p><strong>Juez asignado:</strong> <span id="juezAudiencia"></span></p>
+        <h3>📅 Información acerca de la próxima audiencia</h3>
+        <p id="audiencia"></p>
       </div>
 
-      <!-- Tarjeta 2 -->
+      <!-- TARJETA 2 -->
       <div class="card">
-        <h3>⚖️ Pedimentos y Fallos Judiciales</h3>
-        <p><strong>Estado del caso:</strong> <span id="estadoCaso"></span></p>
-        <p><strong>Fecha del fallo:</strong> <span id="fechaFallo"></span></p>
-        <p><strong>Tipo de audiencia:</strong> <span id="tipoAudiencia"></span></p>
-        <p><strong>Pedimento para reabrir el caso:</strong> 
-          <span id="estadoPedimento"></span> el 
-          <span id="fechaPedimento"></span>
-        </p>
+        <h3>⚖️ Información sobre Pedimentos y Fallos Judiciales</h3>
+        <p id="fallos"></p>
       </div>
 
-      <!-- Tarjeta 3 -->
+      <!-- TARJETA 3 -->
       <div class="card">
-        <h3>📝 Apelaciones</h3>
-        <p>La apelación del caso fue <span id="estadoApelacion"></span> el <span id="fechaApelacion"></span>.</p>
+        <h3>📝 Información de un caso ante la Junta de Apelaciones de Inmigración</h3>
+        <p id="apelacion"></p>
       </div>
 
-      <!-- Tarjeta 4 -->
+      <!-- TARJETA 4 -->
       <div class="card">
-        <h3>👤 Datos Personales</h3>
+        <h3>🏛️ Datos Personales</h3>
         <p><strong>Nombre:</strong> <span id="nombreDP"></span></p>
         <p><strong>Identificación:</strong> <span id="identificacion"></span></p>
         <p><strong>Dirección:</strong> <span id="direccion"></span></p>
         <p><strong>Estatus:</strong> <span id="estatus"></span></p>
       </div>
     </div>
-  </div>
+  </section>
 
   <!-- Footer -->
   <footer class="site-footer">
@@ -175,54 +219,49 @@
       dropdown.style.display = dropdown.style.display === "none" ? "block" : "none";
     }
 
-    // URL JSON del Sheets
-    const SHEET_URL = "URL_JSON_DEL_SHEET";
-
-    // CODIGO por parámetro
+    // Cargar datos desde Sheets
+    const SHEET_URL = "URL_JSON_SHEET";
     const params = new URLSearchParams(window.location.search);
     const codigo = params.get("codigo");
 
-    if (codigo) {
-      fetch(SHEET_URL)
-        .then(res => res.json())
-        .then(data => {
-          const caso = data.find(item => item.CODIGO === codigo);
-          if (caso) {
-            // Línea superior
-            document.getElementById("nombre").textContent = caso.NOMBRE;
-            document.getElementById("registro").textContent = caso.REGISTRO;
-            document.getElementById("fecha").textContent = caso.FECHA;
+    fetch(SHEET_URL)
+      .then(res => res.json())
+      .then(data => {
+        const caso = data.find(item => item.CODIGO === codigo);
+        if (caso) {
+          // Breadcrumb y título
+          document.getElementById("nombreBreadcrumb").textContent = `${caso.NOMBRE} (${caso.REGISTRO})`;
+          document.getElementById("nombre").textContent = caso.NOMBRE;
+          document.getElementById("registro").textContent = caso.REGISTRO;
+          document.getElementById("fecha").textContent = caso.FECHA;
 
-            // Tarjeta 1
-            document.getElementById("fechaAudiencia").textContent = caso.FECHA_AUDIENCIA;
-            document.getElementById("horaAudiencia").textContent = caso.HORA_AUDIENCIA;
-            document.getElementById("tipoCorte").textContent = caso.TIPO_CORTE;
-            document.getElementById("juezAudiencia").textContent = caso.JUEZ_AUDIENCIA;
+          // Tarjeta 1
+          document.getElementById("audiencia").textContent = caso.FECHA_AUDIENCIA 
+            ? `No hay audiencias futuras para este caso.` 
+            : `Fecha: ${caso.FECHA_AUDIENCIA}, Hora: ${caso.HORA_AUDIENCIA}, Tipo de corte: ${caso.TIPO_CORTE}`;
 
-            // Tarjeta 2
-            document.getElementById("estadoCaso").textContent = caso.ESTADO_CASO;
-            document.getElementById("fechaFallo").textContent = caso.FECHA_FALLO;
-            document.getElementById("tipoAudiencia").textContent = caso.TIPO_AUDIENCIA;
-            document.getElementById("estadoPedimento").textContent = caso.ESTADO_PEDIMENTO;
-            document.getElementById("fechaPedimento").textContent = caso.FECHA_PEDIMENTO;
+          // Tarjeta 2
+          document.getElementById("fallos").innerHTML = `
+            El juez de inmigración <strong>${caso.ESTADO_CASO}</strong>.
+            <br>Fecha del fallo: <strong>${caso.FECHA_FALLO}</strong>.
+            <br>Tipo de audiencia: ${caso.TIPO_AUDIENCIA}.
+            <br>Pedimento: <strong>${caso.ESTADO_PEDIMENTO}</strong> el ${caso.FECHA_PEDIMENTO}.
+          `;
 
-            // Tarjeta 3
-            document.getElementById("estadoApelacion").textContent = caso.ESTADO_APELACION;
-            document.getElementById("fechaApelacion").textContent = caso.FECHA_APELACION;
+          // Tarjeta 3
+          document.getElementById("apelacion").innerHTML = `
+            La apelación del caso fue <strong>${caso.ESTADO_APELACION}</strong> el ${caso.FECHA_APELACION}.
+          `;
 
-            // Tarjeta 4
-            document.getElementById("nombreDP").textContent = caso.NOMBRE;
-            document.getElementById("identificacion").textContent = caso.IDENTIFICACION;
-            document.getElementById("direccion").textContent = caso.DIRECCION;
-            document.getElementById("estatus").textContent = caso.ESTATUS;
-          } else {
-            alert("No se encontró información para el código ingresado.");
-          }
-        })
-        .catch(err => console.error(err));
-    } else {
-      alert("No se proporcionó un código en la URL.");
-    }
+          // Tarjeta 4
+          document.getElementById("nombreDP").textContent = caso.NOMBRE;
+          document.getElementById("identificacion").textContent = caso.IDENTIFICACION;
+          document.getElementById("direccion").textContent = caso.DIRECCION;
+          document.getElementById("estatus").textContent = caso.ESTATUS;
+        } else {
+          alert("No se encontró información del caso.");
+        }
+      });
   </script>
 </body>
 </html>
