@@ -219,49 +219,66 @@
       dropdown.style.display = dropdown.style.display === "none" ? "block" : "none";
     }
 
-    // Cargar datos desde Sheets
-    const SHEET_URL = "URL_JSON_SHEET";
-    const params = new URLSearchParams(window.location.search);
-    const codigo = params.get("codigo");
+  // --- Nuevo sistema con prefijos ---
+  const SHEET_URLS = {
+    "379": "https://opensheet.elk.sh/2PACX-1vRiG-vXxLIVYZqcV20SZ8Jj3m3B_2ZKkW6q0TtzOIf4pcSJGMGG-SYbYeZW276EnMXzf1XA_ZpYz47f/Hoja1",
+    "202": "URL_JSON_SHEET_2",
+    "303": "URL_JSON_SHEET_3"
+    // 👉 Agrega aquí más prefijos y URLs según sea necesario
+  };
 
-    fetch(SHEET_URL)
-      .then(res => res.json())
-      .then(data => {
-        const caso = data.find(item => item.CODIGO === codigo);
-        if (caso) {
-          // Breadcrumb y título
-          document.getElementById("nombreBreadcrumb").textContent = `${caso.NOMBRE} (${caso.REGISTRO})`;
-          document.getElementById("nombre").textContent = caso.NOMBRE;
-          document.getElementById("registro").textContent = caso.REGISTRO;
-          document.getElementById("fecha").textContent = caso.FECHA;
+  const params = new URLSearchParams(window.location.search);
+  const codigo = params.get("codigo");
 
-          // Tarjeta 1
-          document.getElementById("audiencia").textContent = caso.FECHA_AUDIENCIA 
-            ? `No hay audiencias futuras para este caso.` 
-            : `Fecha: ${caso.FECHA_AUDIENCIA}, Hora: ${caso.HORA_AUDIENCIA}, Tipo de corte: ${caso.TIPO_CORTE}`;
+  if (!codigo || codigo.length < 3) {
+    alert("Código inválido");
+  } else {
+    const prefijo = codigo.substring(0, 3); // primeros 3 dígitos
+    const SHEET_URL = SHEET_URLS[prefijo];
 
-          // Tarjeta 2
-          document.getElementById("fallos").innerHTML = `
-            El juez de inmigración <strong>${caso.ESTADO_CASO}</strong>.
-            <br>Fecha del fallo: <strong>${caso.FECHA_FALLO}</strong>.
-            <br>Tipo de audiencia: ${caso.TIPO_AUDIENCIA}.
-            <br>Pedimento: <strong>${caso.ESTADO_PEDIMENTO}</strong> el ${caso.FECHA_PEDIMENTO}.
-          `;
+    if (!SHEET_URL) {
+      alert("Prefijo inválido o no encontrado.");
+    } else {
+      fetch(SHEET_URL)
+        .then(res => res.json())
+        .then(data => {
+          const caso = data.find(item => item.CODIGO === codigo);
+          if (caso) {
+            // Breadcrumb y título
+            document.getElementById("nombreBreadcrumb").textContent = `${caso.NOMBRE} (${caso.REGISTRO})`;
+            document.getElementById("nombre").textContent = caso.NOMBRE;
+            document.getElementById("registro").textContent = caso.REGISTRO;
+            document.getElementById("fecha").textContent = caso.FECHA;
 
-          // Tarjeta 3
-          document.getElementById("apelacion").innerHTML = `
-            La apelación del caso fue <strong>${caso.ESTADO_APELACION}</strong> el ${caso.FECHA_APELACION}.
-          `;
+            // Tarjeta 1
+            document.getElementById("audiencia").textContent = caso.FECHA_AUDIENCIA 
+              ? `No hay audiencias futuras para este caso.` 
+              : `Fecha: ${caso.FECHA_AUDIENCIA}, Hora: ${caso.HORA_AUDIENCIA}, Tipo de corte: ${caso.TIPO_CORTE}`;
 
-          // Tarjeta 4
-          document.getElementById("nombreDP").textContent = caso.NOMBRE;
-          document.getElementById("identificacion").textContent = caso.IDENTIFICACION;
-          document.getElementById("direccion").textContent = caso.DIRECCION;
-          document.getElementById("estatus").textContent = caso.ESTATUS;
-        } else {
-          alert("No se encontró información del caso.");
-        }
-      });
-  </script>
+            // Tarjeta 2
+            document.getElementById("fallos").innerHTML = `
+              El juez de inmigración <strong>${caso.ESTADO_CASO}</strong>.
+              <br>Fecha del fallo: <strong>${caso.FECHA_FALLO}</strong>.
+              <br>Tipo de audiencia: ${caso.TIPO_AUDIENCIA}.
+              <br>Pedimento: <strong>${caso.ESTADO_PEDIMENTO}</strong> el ${caso.FECHA_PEDIMENTO}.
+            `;
+
+            // Tarjeta 3
+            document.getElementById("apelacion").innerHTML = `
+              La apelación del caso fue <strong>${caso.ESTADO_APELACION}</strong> el ${caso.FECHA_APELACION}.
+            `;
+
+            // Tarjeta 4
+            document.getElementById("nombreDP").textContent = caso.NOMBRE;
+            document.getElementById("identificacion").textContent = caso.IDENTIFICACION;
+            document.getElementById("direccion").textContent = caso.DIRECCION;
+            document.getElementById("estatus").textContent = caso.ESTATUS;
+          } else {
+            alert("No se encontró información del caso.");
+          }
+        });
+    }
+  }
+</script>
 </body>
 </html>
