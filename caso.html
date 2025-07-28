@@ -68,11 +68,11 @@
   border: 1px solid #d1d1d1;
   border-radius: 6px;
   min-height: 45vh;
-  position: relative; /* Para posicionar el título */
-  padding: 60px 30px 30px 30px; /* espacio superior extra */
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: relative;
+  padding: 60px 30px 30px 30px; 
+  /* Cambiar display y alineación para que texto quede bien */
+  display: block; /* o flex solo si controlas el flujo */
+  /* quitar align-items y justify-content */
 }
 
 .card h3 {
@@ -87,8 +87,9 @@
 
 .card p {
   font-size: 1.15rem;
-  line-height: 2rem; /* más espacio entre renglones */
-  text-align: center;
+  line-height: 2rem;
+  text-align: left; /* cambio a izquierda */
+  margin-top: 10px; /* algo de espacio sobre el texto */
 }
 
 .card.empty {
