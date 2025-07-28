@@ -67,28 +67,28 @@
   background: #fff;
   border: 1px solid #d1d1d1;
   border-radius: 6px;
-  padding: 30px;
-  min-height: 45vh; /* Cada tarjeta ocupa el 45% de la altura de pantalla */
+  min-height: 45vh;
+  position: relative; /* Para poder posicionar el título */
+  padding: 40px 30px;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between; /* Título abajo, contenido centrado */
+  align-items: center;
+  justify-content: center;
 }
 
 .card h3 {
   font-size: 1.3rem;
   font-weight: bold;
-  align-self: flex-start; /* Alinea el título a la izquierda */
-  margin: 0; /* Quita margen superior/inferior */
+  position: absolute;
+  bottom: 15px;
+  left: 20px;
+  margin: 0;
+  text-align: left;
 }
 
 .card p {
   font-size: 1.15rem;
-  line-height: 2rem; /* Aumenta interlineado */
+  line-height: 2rem;
   text-align: center;
-  flex: 1; /* Ocupa el espacio central */
-  display: flex;
-  align-items: center; /* Centra verticalmente */
-  justify-content: center; /* Centra horizontalmente */
 }
 
 .card.empty {
