@@ -462,14 +462,18 @@
     });
   });
 
-  // 👉 Acción al presionar ENVIAR
-  button.addEventListener('click', () => {
-    // Juntar los 9 dígitos en un solo string
-    const codigo = Array.from(inputs).map(input => input.value).join('');
-    // Redirigir a caso.html con el código
-    window.location.href = `caso.html?codigo=${codigo}`;
-  });
+ // 👉 Acción al presionar ENVIAR con prefijo incluido
+button.addEventListener('click', () => {
+  const codigo = Array.from(inputs).map(input => input.value).join('');
 
+  if (codigo.length < 3) {
+    alert("Código inválido");
+    return;
+  }
+
+  // Envía el código completo a caso.html
+  window.location.href = `caso.html?codigo=${codigo}`;
+});
   checkInputs(); // Ejecuta validación al cargar
 </script>
 </body>
