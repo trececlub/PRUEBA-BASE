@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Información del Caso</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #e9f0f6;
+      color: #111;
+    }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      font-size: 0.9rem;
+      padding: 10px 40px;
+    }
+    .breadcrumb a {
+      color: #0056b3;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    /* Contenedor central */
+    .case-container {
+      max-width: 1100px;
+      margin: auto;
+      text-align: center;
+      padding: 20px;
+    }
+    .case-container h1 {
+      font-size: 1.8rem;
+      margin: 10px 0;
+    }
+    .case-info {
+      font-size: 1rem;
+      margin-bottom: 20px;
+    }
+
+    /* Tarjetas */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      padding: 20px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      padding: 15px;
+      text-align: left;
+    }
+    .card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+    }
+    .card p {
+      font-size: 0.95rem;
+      color: #333;
+    }
+
+    @media (max-width: 768px) {
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER igual al index -->
+  <header style="background-color: #111; height: 80px; display: flex; justify-content: flex-start; align-items: center; padding: 0 30px;">
+    <img src="logo.png" alt="Logo" style="height: 50px;">
+  </header>
+
+  <!-- Barra amarilla -->
+  <section style="background-color: #fcd100; padding: 20px 20px; font-family: Arial, sans-serif;">
+    <div style="color: #111; font-size: 16px; font-weight: bold;">
+      Texto de la barra amarilla | revisa el link:
+      <a href="https://tupagina.com/enlace" target="_blank" style="text-decoration: underline; color: #000;">
+        este es el link
+      </a>
+    </div>
+  </section>
+
+  <!-- Breadcrumb -->
+  <div class="breadcrumb">
+    <a href="index.html">Inicio</a> > <span id="nombreBreadcrumb">UGUETO-SANCHEZ, LEHMAN RENE</span>
+  </div>
+
+  <!-- Contenido central -->
+  <div class="case-container">
+    <img src="https://img.icons8.com/ios-filled/50/000000/courthouse.png" alt="Icono tribunal" />
+    <h1>Información automatizada de casos</h1>
+    <div class="case-info" id="datosCabecera">
+      Nombre: <strong id="nombre">UGUETO-SANCHEZ, LEHMAN RENE</strong> |
+      Número de registro de extranjero: <strong id="registro">249-214-080</strong> |
+      Fecha de la lista de causas: <strong id="fecha">6/8/2024</strong>
+    </div>
+
+    <!-- Cuadrícula de tarjetas -->
+    <div class="cards-grid">
+      <!-- Tarjeta 1 -->
+      <div class="card">
+        <h3>📅 Información acerca de la próxima audiencia</h3>
+        <p id="audiencia">No hay audiencias futuras para este caso.</p>
+      </div>
+      <!-- Tarjeta 2 -->
+      <div class="card">
+        <h3>⚖️ Información sobre Pedimentos y Fallos Judiciales</h3>
+        <p id="fallos">
+          El juez de inmigración ORDENÓ la expulsión.<br><br>
+          <strong>Fecha del fallo:</strong> 30 de octubre de 2024<br>
+          <strong>Dirección del tribunal:</strong><br>
+          1 FEDERAL DRIVE, SUITE 1850<br>
+          FORT SNELLING, MN 55111<br><br>
+          <strong>Pedimento para reabrir el caso:</strong> DENEGADO el 12 de noviembre de 2024.
+        </p>
+      </div>
+      <!-- Tarjeta 3 -->
+      <div class="card">
+        <h3>📝 Información de un caso ante la Junta de Apelaciones de Inmigración</h3>
+        <p id="apelaciones">La apelación del caso fue DESESTIMADO el 24 de abril de 2025.</p>
+      </div>
+      <!-- Tarjeta 4 -->
+      <div class="card">
+        <h3>🏛️ Información acerca del Tribunal</h3>
+        <p id="tribunal">
+          Si necesita más información sobre su caso, comuníquese con el tribunal.<br><br>
+          <strong>Dirección:</strong><br>
+          1 FEDERAL DRIVE, SUITE 1850<br>
+          FORT SNELLING, MN 55111<br><br>
+          <strong>Teléfono:</strong> (612) 725-3765
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER igual al index -->
+  <footer class="footer-bottom" style="background:#111; color:#fff; text-align:center; padding:20px;">
+    <p>&copy; 2025 CLUB TRECE | Acceso seguro</p>
+  </footer>
+</body>
+</html>
