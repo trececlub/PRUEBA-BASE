@@ -36,14 +36,13 @@
       font-weight: bold;
     }
 
- .title-section p {
-  font-size: 2rem;
-  line-height: 2.4rem;
-  max-width: 1100px;
+.title-section {
+  max-width: 1200px;
   margin: 0 auto;
-  white-space: nowrap;    /* mantener en una sola línea */
-  overflow: hidden;
-  text-overflow: ellipsis;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
 }
 
@@ -58,11 +57,11 @@
 }
 
 .title-section p {
-  font-size: 1.8rem;
-  line-height: 2.2rem;
+  font-size: 2rem;       /* tamaño grande pero proporcionado */
+  line-height: 2.4rem;
   max-width: 1100px;
   margin: 0 auto;
-  white-space: normal; /* se adapta y no se desborda */
+  white-space: normal;   /* permite dividir en varias líneas si es necesario */
   text-align: center;
 }
 
