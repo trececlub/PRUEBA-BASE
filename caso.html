@@ -54,34 +54,36 @@
       font-size: 0.95rem;
     }
 
- .cards-container {
+.cards-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 30px; /* Más separación entre tarjetas */
-  max-width: 1100px;
+  gap: 40px; /* más espacio entre tarjetas */
+  max-width: 1200px;
   margin: auto;
 }
 
 .card {
   background: #fff;
   border: 1px solid #d1d1d1;
-  border-radius: 12px; /* Bordes más redondeados */
-  padding: 20px; /* Más aire interno */
-  min-height: 200px; /* Altura más alta */
+  border-radius: 16px; /* bordes más suaves */
+  padding: 40px 30px; /* más aire interno */
+  min-height: 260px; /* tarjetas mucho más grandes */
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Centrado vertical del contenido */
+  justify-content: center;
+  align-items: center; /* centrado horizontal */
+  text-align: center; /* centrado del texto */
 }
 
 .card h3 {
-  font-size: 1.05rem;
-  margin-bottom: 12px;
+  font-size: 1.3rem; /* más grande el título */
+  margin-bottom: 20px;
   font-weight: bold;
 }
 
 .card p {
-  font-size: 1rem;
-  line-height: 1.6rem;
+  font-size: 1.1rem;
+  line-height: 2rem; /* interlineado amplio */
 }
 
 .card.empty {
