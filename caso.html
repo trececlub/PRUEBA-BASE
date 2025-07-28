@@ -10,8 +10,16 @@
     body { background: #fff; color: #000; display: flex; flex-direction: column; min-height: 100vh; }
 
     /* Barra negra superior */
-    .top-bar { background: #000; color: #fff; font-size: 0.8rem; padding: 6px 16px; display: flex; justify-content: space-between; align-items: center; }
-
+   .top-bar { 
+  background: #000; 
+  color: #fff; 
+  font-size: 0.8rem; 
+  padding: 6px 16px; 
+  display: flex; 
+  align-items: center; 
+  gap: 10px;               /* espacio entre el texto y el botón */
+  justify-content: flex-start; /* alinear texto y botón juntos a la izquierda */
+}
     /* Header */
     header { background-color: #111; height: 80px; display: flex; align-items: center; padding: 0 30px; }
     header img { height: 50px; }
