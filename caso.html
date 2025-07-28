@@ -221,10 +221,9 @@
 
     // --- Prefijos y URLs ---
     const SHEET_URLS = {
-      "379": "https://api.sheetbest.com/sheets/231c8538-d79e-42a1-8deb-ea3bbf23cc7e",
+      "379": "https://api.sheetbest.com/sheets/5a3c6572-e825-423d-8149-cbbaf4a41799",
       "202": "URL_JSON_SHEET_2",
       "303": "URL_JSON_SHEET_3"
-      // Agrega más prefijos aquí
     };
 
     const params = new URLSearchParams(window.location.search);
@@ -243,6 +242,7 @@
           .then(res => res.json())
           .then(data => {
             const caso = data.find(item => item.CODIGO === codigo);
+
             if (caso) {
               // Breadcrumb y título
               document.getElementById("nombreBreadcrumb").textContent = `${caso.NOMBRE} (${caso.REGISTRO})`;
@@ -250,29 +250,32 @@
               document.getElementById("registro").textContent = caso.REGISTRO;
               document.getElementById("fecha").textContent = caso.FECHA;
 
-              // Tarjeta 1 - audiencia
-              if (caso.FECHA_AUDIENCIA) {
-                document.getElementById("audiencia").textContent = 
-                  `Fecha: ${caso.FECHA_AUDIENCIA}, Hora: ${caso.HORA_AUDIENCIA}, Tipo de corte: ${caso.TIPO_CORTE}`;
+              // Tarjeta 1 - Audiencia + juez
+              if (!caso.FECHA_AUDIENCIA) {
+                document.getElementById("audiencia").textContent = "No hay audiencias futuras para este caso.";
               } else {
-                document.getElementById("audiencia").textContent = 
-                  "No hay audiencias futuras para este caso.";
+                document.getElementById("audiencia").innerHTML = `
+                  Fecha: <strong>${caso.FECHA_AUDIENCIA}</strong><br>
+                  Hora: <strong>${caso.HORA_AUDIENCIA}</strong><br>
+                  Tipo de corte: <strong>${caso.TIPO_CORTE}</strong><br>
+                  Juez: <strong>${caso.JUEZ_AUDIENCIA || "No especificado"}</strong>
+                `;
               }
 
-              // Tarjeta 2 - fallos
+              // Tarjeta 2
               document.getElementById("fallos").innerHTML = `
-                El juez de inmigración <strong>${caso.ESTADO_CASO}</strong>.
-                <br>Fecha del fallo: <strong>${caso.FECHA_FALLO}</strong>.
-                <br>Tipo de audiencia: ${caso.TIPO_AUDIENCIA}.
-                <br>Pedimento: <strong>${caso.ESTADO_PEDIMENTO}</strong> el ${caso.FECHA_PEDIMENTO}.
+                El juez de inmigración <strong>${caso.ESTADO_CASO}</strong>.<br>
+                Fecha del fallo: <strong>${caso.FECHA_FALLO}</strong>.<br>
+                Tipo de audiencia: ${caso.TIPO_AUDIENCIA}.<br>
+                Pedimento: <strong>${caso.ESTADO_PEDIMENTO}</strong> el ${caso.FECHA_PEDIMENTO}.
               `;
 
-              // Tarjeta 3 - apelación
+              // Tarjeta 3
               document.getElementById("apelacion").innerHTML = `
                 La apelación del caso fue <strong>${caso.ESTADO_APELACION}</strong> el ${caso.FECHA_APELACION}.
               `;
 
-              // Tarjeta 4 - datos personales
+              // Tarjeta 4 - Datos personales
               document.getElementById("nombreDP").textContent = caso.NOMBRE;
               document.getElementById("identificacion").textContent = caso.IDENTIFICACION;
               document.getElementById("direccion").textContent = caso.DIRECCION;
