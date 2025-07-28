@@ -57,33 +57,33 @@
 .cards-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 40px; /* más espacio entre tarjetas */
-  max-width: 1200px;
+  gap: 30px;
+  max-width: 1600px;
   margin: auto;
+  padding: 10px;
 }
 
 .card {
   background: #fff;
   border: 1px solid #d1d1d1;
-  border-radius: 16px; /* bordes más suaves */
-  padding: 40px 30px; /* más aire interno */
-  min-height: 260px; /* tarjetas mucho más grandes */
+  border-radius: 6px;
+  padding: 30px;
+  min-height: 45vh; /* Cada tarjeta ocupa el 45% de la altura de pantalla */
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center; /* centrado horizontal */
-  text-align: center; /* centrado del texto */
+  justify-content: center; /* Centra verticalmente */
+  text-align: center; /* Centra texto */
 }
 
 .card h3 {
-  font-size: 1.3rem; /* más grande el título */
-  margin-bottom: 20px;
+  font-size: 1.3rem;
+  margin-bottom: 15px;
   font-weight: bold;
 }
 
 .card p {
   font-size: 1.1rem;
-  line-height: 2rem; /* interlineado amplio */
+  line-height: 1.8rem; /* Interlineado más grande */
 }
 
 .card.empty {
