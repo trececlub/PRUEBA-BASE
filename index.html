@@ -478,5 +478,66 @@ button.addEventListener('click', () => {
 });
   checkInputs(); // Ejecuta validación al cargar
 </script>
+ 
+  <!-- Modal de Descargo de Responsabilidad -->
+<div id="welcomeModal" style="
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+">
+  <div style="
+    background: white;
+    padding: 40px;
+    border-radius: 10px;
+    width: 70%;
+    max-width: 900px;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+  ">
+    <h2 style="margin-bottom: 20px; font-size: 2rem; color:#111;">
+      Descargo de Responsabilidad
+    </h2>
+    <p style="font-size: 1.2rem; margin-bottom: 30px; color:#333; text-align: justify;">
+      La información proporcionada en este sistema es únicamente de carácter informativo y 
+      no constituye un documento oficial. Los datos aquí mostrados pueden no estar 
+      actualizados y no sustituyen los documentos emitidos directamente por el tribunal 
+      de inmigración o la junta de apelaciones. El usuario es responsable de verificar 
+      la información oficial directamente con las autoridades competentes.
+    </p>
+    <button id="btnAceptar" style="
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 15px 40px;
+      font-size: 1.2rem;
+      border-radius: 6px;
+      cursor: pointer;
+    ">ACEPTAR</button>
+  </div>
+</div>
+
+<script>
+  const modal = document.getElementById('welcomeModal');
+  const btnAceptar = document.getElementById('btnAceptar');
+
+  // Solo se puede cerrar con el botón Aceptar
+  btnAceptar.addEventListener('click', () => {
+    modal.style.display = 'none';
+  });
+
+  // No se cierra al hacer clic fuera
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      // No permitir cierre al hacer clic fuera
+    }
+  });
+</script>
 </body>
 </html>
