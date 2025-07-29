@@ -209,50 +209,125 @@
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="site-footer">
-    <div class="footer-top">
-      <div class="footer-column">
-        <a href="#">Archivo</a>
-        <a href="#">Accesibilidad</a>
-        <a href="#">Calidad de Información</a>
-        <a href="#">Política de Privacidad</a>
-        <a href="#">Políticas Legales</a>
-      </div>
-      <div class="footer-column">
-        <a href="#">Redes Sociales</a>
-        <a href="#">Presupuesto</a>
-        <a href="#">Inspector General</a>
-        <a href="#">No FEAR Act</a>
-        <a href="#">Para Empleados</a>
-      </div>
-      <div class="footer-column">
-        <a href="#">Ley FOIA</a>
-        <a href="#">USA.gov</a>
-        <a href="#">Contacto</a>
-        <a href="#">Principal EOIR</a>
-        <a href="#">Justice.gov</a>
-      </div>
-      <div class="footer-column">
-        <a href="#">Recursos Corte</a>
-        <a href="#">Asistencia Técnica</a>
-        <a href="#">hCaptcha</a>
-        <a href="#">Política hCaptcha</a>
-        <a href="#">Términos hCaptcha</a>
-      </div>
+ <!-- FOOTER -->
+<footer class="site-footer">
+  <style>
+    .site-footer {
+      background-color: #1a1a1a;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      padding: 40px 20px;
+      font-size: 14px;
+    }
+
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .footer-column {
+      display: flex;
+      flex-direction: column;
+      width: 22%;
+      margin-bottom: 20px;
+    }
+
+    .footer-column a {
+      color: #ffffff;
+      text-decoration: underline;
+      margin-bottom: 6px;
+      transition: color 0.2s ease;
+    }
+
+    .footer-column a:hover {
+      color: #0af;
+    }
+
+    .footer-divider {
+      border: none;
+      margin: 0;
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .footer-info p {
+      margin: 3px 0;
+      color: #ccc;
+    }
+
+    .footer-branding {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #fff;
+    }
+
+    .footer-logo {
+      height: 30px;
+    }
+
+    @media (max-width: 768px) {
+      .footer-column {
+        width: 100%;
+      }
+      .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+    }
+  </style>
+
+  <div class="footer-top">
+    <div class="footer-column">
+      <a href="#">Archivo</a>
+      <a href="#">Accesibilidad</a>
+      <a href="#">Calidad de Información</a>
+      <a href="#">Política de Privacidad</a>
+      <a href="#">Políticas Legales</a>
     </div>
-    <hr class="footer-divider">
-    <div class="footer-bottom">
-      <div class="footer-info">
-        <p>Department of Justice | Executive Office for Review</p>
-        <p><em>&copy; 2025</em></p>
-      </div>
-      <div class="footer-branding">
-        <img src="ruta-a-tu-logo.png" alt="Logo" class="footer-logo">
-        <span><strong>CLUB TRECE</strong> | Acceso seguro</span>
-      </div>
+    <div class="footer-column">
+      <a href="#">Redes Sociales</a>
+      <a href="#">Presupuesto</a>
+      <a href="#">Inspector General</a>
+      <a href="#">No FEAR Act</a>
+      <a href="#">Para Empleados</a>
     </div>
-  </footer>
+    <div class="footer-column">
+      <a href="#">Ley FOIA</a>
+      <a href="#">USA.gov</a>
+      <a href="#">Contacto</a>
+      <a href="#">Principal EOIR</a>
+      <a href="#">Justice.gov</a>
+    </div>
+    <div class="footer-column">
+      <a href="#">Recursos Corte</a>
+      <a href="#">Asistencia Técnica</a>
+      <a href="#">hCaptcha</a>
+      <a href="#">Política hCaptcha</a>
+      <a href="#">Términos hCaptcha</a>
+    </div>
+  </div>
+
+  <hr class="footer-divider">
+
+  <div class="footer-bottom">
+    <div class="footer-info">
+      <p>Department of Justice | Executive Office for Review</p>
+      <p><em>&copy; 2025</em></p>
+    </div>
+    <div class="footer-branding">
+      <img src="ruta-a-tu-logo.png" alt="Logo" class="footer-logo">
+      <span><strong>CLUB TRECE</strong> | Acceso seguro</span>
+    </div>
+  </div>
+</footer>
 
   <script>
     function toggleDropdown() {
