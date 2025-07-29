@@ -451,7 +451,7 @@
   function checkInputs() {
     const allFilled = Array.from(inputs).every(input => input.value.trim().length === 1);
     button.disabled = !allFilled;
-    button.style.backgroundColor = allFilled ? '#000' : '#ccc';
+    button.style.backgroundColor = allFilled ? '#007bff' : '#ccc';
     button.style.cursor = allFilled ? 'pointer' : 'not-allowed';
   }
 
