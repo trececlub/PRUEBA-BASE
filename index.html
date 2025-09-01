@@ -2,193 +2,341 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Soluciones Migratorias | Consulta de Estado de Caso</title>
-  <meta name="description" content="Plataforma de Soluciones Migratorias para que nuestros clientes consulten el estado de su caso de forma segura y clara." />
+  <meta name="description" content="Plataforma móvil de Soluciones Migratorias para que nuestros clientes consulten el estado de su caso de forma segura y clara." />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
-</head>
-<body style="display:flex; flex-direction:column; min-height:100vh; font-family:'Inter', system-ui, -apple-system, Arial, sans-serif; background:#fff; color:#111;">
 
-  <!-- Barra superior (informativa, sin bandera/emoji) -->
-  <div style="background:#000; color:#fff; padding:6px 16px; display:flex; align-items:center; justify-content:space-between; font-size:14px;">
-    <span style="margin-right:10px;">Plataforma exclusiva para clientes de Soluciones Migratorias</span>
-    <div style="position: relative;">
-      <button onclick="toggleDropdown()" style="background:none; border:none; color:#ffd700; cursor:pointer; font-weight:700;">
-        Más información ▼
-      </button>
-      <div id="dropdownContent" style="display:none; position:absolute; top:100%; right:0; background:#222; color:#fff; padding:10px; width:280px; box-shadow:0 4px 8px rgba(0,0,0,0.3); z-index:10; border-radius:6px; font-size:13px; line-height:1.4;">
+  <style>
+    :root{
+      --brand-blue:#0b2a4a;
+      --brand-blue-600:#09365f;
+      --accent:#fcd100;
+      --text:#111;
+      --muted:#444;
+      --bg:#fff;
+      --bg-soft:#f6f8fb;
+      --border:#d9d9d9;
+    }
+    /* Reset básico y mobile-first */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; background:var(--bg); color:var(--text);
+      font-family:'Inter', system-ui, -apple-system, Arial, sans-serif;
+      display:flex; flex-direction:column; min-height:100vh;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    }
+    img{max-width:100%; display:block}
+    a{color:inherit}
+
+    /* Barra superior */
+    .topbar{
+      background:#000; color:#fff; padding:8px 14px;
+      display:flex; align-items:center; justify-content:space-between;
+      font-size:clamp(12px, 3.3vw, 14px);
+      position:relative; z-index:5;
+    }
+    .topbar button{
+      background:none; border:none; color:var(--accent);
+      font-weight:700; cursor:pointer; padding:6px 8px; border-radius:6px;
+    }
+    .dropdown{
+      position:absolute; right:10px; top:100%;
+      background:#222; color:#fff; width:min(92vw, 320px);
+      padding:12px; border-radius:8px; box-shadow:0 6px 18px rgba(0,0,0,.3);
+      display:none; font-size:clamp(12px, 3.4vw, 14px); line-height:1.5;
+    }
+
+    /* Header */
+    header{
+      background:var(--brand-blue); height:64px;
+      display:flex; align-items:center; padding:0 16px;
+    }
+    header img{height:40px; width:auto}
+
+    /* Barra amarilla */
+    .promo{
+      background:var(--accent); padding:12px 16px;
+      font-weight:700; font-size:clamp(14px, 3.8vw, 16px);
+      text-align:center;
+    }
+    .promo a{color:#000; text-decoration:underline}
+
+    /* Sección principal */
+    .intro{
+      background:var(--bg-soft); text-align:center; padding:24px 16px;
+    }
+    .intro h1{
+      margin:10px 0 8px;
+      font-size:clamp(20px, 6vw, 32px);
+      color:var(--brand-blue);
+      font-weight:800;
+    }
+    .intro p{
+      margin:0 auto; max-width:58ch;
+      font-size:clamp(14px, 3.8vw, 16px);
+      line-height:1.7; color:#333;
+    }
+    .card{
+      background:#fff; color:var(--text);
+      border-radius:12px; box-shadow:0 8px 30px rgba(0,0,0,.12);
+      margin:16px auto 28px; padding:18px;
+      width:min(92vw, 720px);
+    }
+    .card h2{
+      text-align:center; margin:0 0 12px;
+      color:var(--brand-blue);
+      font-size:clamp(18px, 5.4vw, 26px);
+    }
+    .field-hint{
+      text-align:center; margin:0 0 10px;
+      font-size:clamp(13px, 3.6vw, 15px);
+    }
+    .field-hint .required{ color:#c40000; margin-left:.25rem }
+
+    /* Inputs de código (mobile-friendly) */
+    .code-inputs{
+      display:flex; justify-content:center; gap:clamp(6px, 2.5vw, 12px);
+      margin:16px 0 18px; flex-wrap:wrap;
+    }
+    .code-inputs input{
+      width:clamp(38px, 10.5vw, 52px);
+      height:clamp(48px, 12.5vw, 62px);
+      text-align:center; font-size:clamp(20px, 6vw, 26px);
+      border:2px solid var(--border); border-radius:8px; outline:none;
+    }
+    .code-inputs input:focus{ border-color:var(--brand-blue) }
+
+    .btn{
+      width:100%; max-width:520px; display:block; margin:0 auto;
+      padding:14px 18px; font-size:clamp(15px, 4.5vw, 17px);
+      border-radius:10px; border:none; font-weight:700;
+      background:#ccc; color:#fff; cursor:not-allowed;
+      transition:background .2s ease;
+    }
+    .btn.enabled{ background:var(--brand-blue); cursor:pointer }
+    .btn.enabled:active{ background:var(--brand-blue-600) }
+
+    .info{
+      margin-top:12px; font-size:clamp(12px, 3.5vw, 15px);
+      color:var(--muted); display:flex; gap:8px; align-items:flex-start;
+    }
+
+    /* Footer */
+    footer{
+      background:#111; color:#fff; text-align:center; padding:16px;
+      font-size:clamp(12px, 3.3vw, 14px);
+    }
+
+    /* Modal */
+    .modal{
+      position:fixed; inset:0; background:rgba(0,0,0,.85);
+      display:flex; align-items:center; justify-content:center; z-index:9999;
+      padding:16px;
+    }
+    .modal-content{
+      background:#fff; border-radius:12px; width:100%;
+      max-width:900px; padding:20px;
+      display:grid; gap:16px; grid-template-columns:1fr;
+    }
+    .modal h2{
+      margin:0 0 8px; color:var(--brand-blue);
+      font-size:clamp(18px, 5.4vw, 26px);
+    }
+    .modal p{
+      margin:0 0 14px; color:#333; line-height:1.7;
+      font-size:clamp(14px, 3.8vw, 16px); text-align:justify;
+    }
+    .modal .actions{display:flex; justify-content:flex-start}
+    .modal .btn-accept{
+      background:var(--accent); color:#111; border:none;
+      padding:12px 18px; border-radius:10px; font-weight:700;
+      font-size:clamp(14px, 4.2vw, 16px); cursor:pointer;
+    }
+    .modal .img-wrap{display:none}
+
+    /* Mejora en pantallas medianas y grandes */
+    @media (min-width: 768px){
+      header{height:80px; padding:0 30px}
+      header img{height:50px}
+      .card{padding:24px}
+      .modal-content{grid-template-columns:1fr 1fr; padding:24px}
+      .modal .img-wrap{display:flex; align-items:center; justify-content:center}
+    }
+
+    /* Accesibilidad: evita animaciones forzadas */
+    @media (prefers-reduced-motion: reduce){
+      *{transition:none !important; animation:none !important}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Barra superior -->
+  <div class="topbar">
+    <span>Plataforma exclusiva para clientes de Soluciones Migratorias</span>
+    <div style="position:relative">
+      <button id="ddBtn" aria-expanded="false" aria-controls="dropdown">Más información ▼</button>
+      <div id="dropdown" class="dropdown" role="region">
         Aquí podrá conocer cómo usar esta plataforma para revisar hitos del proceso, próximas fechas y notas relevantes del equipo legal.
       </div>
     </div>
   </div>
 
-  <script>
-    function toggleDropdown() {
-      const dd = document.getElementById("dropdownContent");
-      dd.style.display = (dd.style.display === "none" || dd.style.display === "") ? "block" : "none";
-    }
-    document.addEventListener('click', (e)=>{
-      const dd = document.getElementById("dropdownContent");
-      const btn = e.target.closest('button[onclick="toggleDropdown()"]');
-      if (!btn && dd && dd.style.display === 'block' && !dd.contains(e.target)) dd.style.display = 'none';
-    });
-    document.addEventListener('keydown', (e)=>{
-      if (e.key === 'Escape') {
-        const dd = document.getElementById("dropdownContent");
-        if (dd) dd.style.display = 'none';
-      }
-    });
-  </script>
-
   <!-- Header -->
-  <header style="background:#0b2a4a; height:80px; display:flex; align-items:center; padding:0 30px;">
-    <img src="logo.png" alt="Soluciones Migratorias - Logo" style="height:50px;">
+  <header>
+    <img src="logo.png" alt="Soluciones Migratorias - Logo">
   </header>
 
-  <!-- Barra amarilla (acceso sitio principal) -->
-  <section style="background:#fcd100; padding:18px 20px;">
-    <div style="color:#111; font-size:16px; font-weight:700;">
-      Nuestra página principal |
-      <a href="https://solucionesmigratorias.us" target="_blank" rel="noopener" style="text-decoration:underline; color:#000;">
-        [Visitar sitio web]
-      </a>
-    </div>
+  <!-- Barra amarilla -->
+  <section class="promo">
+    Nuestra página principal |
+    <a href="https://solucionesmigratorias.us" target="_blank" rel="noopener">[Visitar sitio web]</a>
   </section>
 
-  <!-- Sección central unificada: texto arriba + tarjeta de consulta -->
-  <section class="main-section" style="flex:1 0 auto;">
-    <!-- Intro -->
-    <div style="background:#f6f8fb; text-align:center; padding:2.4rem 1rem;">
-      <img src="https://img.icons8.com/ios-filled/100/000000/courthouse.png" alt="Icono de justicia" style="width:72px; margin-bottom:1rem;" />
-      <h1 style="font-size:2rem; font-weight:800; margin-bottom:.6rem; color:#0b2a4a;">
-        Consulta el estado de tu caso
-      </h1>
-      <p style="font-size:1.05rem; line-height:1.65; color:#333; max-width:900px; margin:0 auto;">
+  <!-- Sección principal -->
+  <main style="flex:1 0 auto;">
+    <section class="intro">
+      <img src="https://img.icons8.com/ios-filled/100/000000/courthouse.png" alt="Icono de justicia" style="width:64px; margin:0 auto 10px;">
+      <h1>Consulta el estado de tu caso</h1>
+      <p>
         Bienvenido a la plataforma oficial de <strong>Soluciones Migratorias</strong>. Aquí podrás revisar de manera segura
         el avance de tu proceso, próximas audiencias, documentos clave y notas del equipo legal. Nuestro objetivo es
         mantenerte informado con claridad y oportunidad.
       </p>
-    </div>
+    </section>
 
-    <!-- Tarjeta de código -->
-    <div class="white-box" style="background:#fff; padding:2rem; border-radius:12px; box-shadow:0 8px 30px rgba(0,0,0,0.12); max-width:720px; margin:1.25rem auto 2.5rem; color:#111;">
-      <h2 style="font-size:1.6rem; margin-bottom:1rem; text-align:center; color:#0b2a4a;">Ingresa tu número de caso</h2>
+    <section class="card" aria-labelledby="ingreso-caso">
+      <h2 id="ingreso-caso">Ingresa tu número de caso</h2>
 
-      <p style="margin-bottom:.75rem; text-align:center;">
+      <p class="field-hint">
         <strong>Número de referencia</strong>
-        <span class="required" style="color:#c40000; font-size:0.9rem; margin-left:.25rem;">*Obligatorio</span>
-        <a href="#" class="help" style="color:#0b5acc; text-decoration:none; font-size:0.9rem; margin-left:0.5rem;">
-          ¿Dónde lo encuentro?
-        </a>
+        <span class="required">*</span>
+        <a href="#" style="color:#0b5acc; text-decoration:none;">¿Dónde lo encuentro?</a>
       </p>
 
-      <div class="code-inputs" style="display:flex; gap:12px; justify-content:center; margin:1.25rem 0 1.5rem;">
-        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 1" style="width:50px; height:60px; font-size:1.6rem; text-align:center; border:2px solid #d9d9d9; border-radius:6px;">
-        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 2" style="width:50px; height:60px; font-size:1.6rem; text-align:center; border:2px solid #d9d9d9; border-radius:6px;">
-        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 3" style="width:50px; height:60px; font-size:1.6rem; text-align:center; border:2px solid #d9d9d9; border-radius:6px;">
-        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 4" style="width:50px; height:60px; font-size:1.6rem; text-align:center; border:2px solid #d9d9d9; border-radius:6px;">
-        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 5" style="width:50px; height:60px; font-size:1.6rem; text-align:center; border:2px solid #d9d9d9; border-radius:6px;">
-        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 6" style="width:50px; height:60px; font-size:1.6rem; text-align:center; border:2px solid #d9d9d9; border-radius:6px;">
-        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 7" style="width:50px; height:60px; font-size:1.6rem; text-align:center; border:2px solid #d9d9d9; border-radius:6px;">
-        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 8" style="width:50px; height:60px; font-size:1.6rem; text-align:center; border:2px solid #d9d9d9; border-radius:6px;">
-        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 9" style="width:50px; height:60px; font-size:1.6rem; text-align:center; border:2px solid #d9d9d9; border-radius:6px;">
+      <div class="code-inputs" aria-label="Ingresar 9 dígitos del número de caso">
+        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" aria-label="Dígito 1">
+        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" aria-label="Dígito 2">
+        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" aria-label="Dígito 3">
+        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" aria-label="Dígito 4">
+        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" aria-label="Dígito 5">
+        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" aria-label="Dígito 6">
+        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" aria-label="Dígito 7">
+        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" aria-label="Dígito 8">
+        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" aria-label="Dígito 9">
       </div>
 
-      <button id="btnEnviar" disabled
-        style="width:100%; max-width:520px; display:block; margin:0 auto; padding:1rem; font-size:1.05rem; border-radius:8px; background:#ccc; color:#fff; border:none; cursor:not-allowed; font-weight:700;">
-        CONSULTAR
-      </button>
+      <button id="btnEnviar" class="btn" disabled>CONSULTAR</button>
 
-      <p class="info" style="margin-top:1rem; font-size:0.95rem; color:#444; display:flex; align-items:flex-start; gap:8px;">
+      <p class="info">
         <span aria-hidden="true">ℹ️</span>
         La información mostrada en esta plataforma es referencial. Los documentos y notificaciones
         oficiales seguirán siendo los emitidos por las autoridades competentes o enviados por nuestro equipo legal.
       </p>
-    </div>
-  </section>
+    </section>
+  </main>
 
-  <!-- Footer simplificado -->
-  <footer style="background:#111; color:#fff; text-align:center; padding:20px; font-size:14px;">
+  <!-- Footer -->
+  <footer>
     <p>&copy; 2025 | Soluciones Migratorias</p>
   </footer>
 
-  <!-- Funcionalidad de inputs y consulta -->
-  <script>
-    // Inputs y botón
-    const inputs = document.querySelectorAll('.code-inputs input');
-    const button = document.querySelector('#btnEnviar');
-
-    function sanitizeToDigit(el) {
-      el.value = el.value.replace(/\D/g, '').slice(0, 1);
-    }
-    function getCode() {
-      return Array.from(inputs).map(i => i.value).join('');
-    }
-    function checkInputs() {
-      const code = getCode();
-      const ok = code.length === inputs.length && /^[0-9]{9}$/.test(code);
-      button.disabled = !ok;
-      button.style.backgroundColor = ok ? '#0b2a4a' : '#ccc';
-      button.style.cursor = ok ? 'pointer' : 'not-allowed';
-    }
-
-    inputs.forEach((input, i) => {
-      input.addEventListener('input', () => {
-        sanitizeToDigit(input);
-        if (input.value && inputs[i + 1]) inputs[i + 1].focus();
-        checkInputs();
-      });
-      input.addEventListener('keydown', (e) => {
-        if (e.key === 'Backspace' && !input.value && inputs[i - 1]) inputs[i - 1].focus();
-      });
-      input.addEventListener('paste', (e) => {
-        e.preventDefault();
-        const data = (e.clipboardData.getData('text') || '').replace(/\D/g, '').slice(0, inputs.length);
-        data.split('').forEach((ch, idx) => { if (inputs[idx]) inputs[idx].value = ch; });
-        if (inputs[data.length - 1]) inputs[data.length - 1].focus();
-        checkInputs();
-      });
-    });
-
-    button.addEventListener('click', () => {
-      const codigo = getCode();
-      if (!/^[0-9]{9}$/.test(codigo)) {
-        alert("Número inválido. Deben ser 9 dígitos.");
-        return;
-      }
-      // Redirección a la página del caso
-      window.location.href = `caso.html?codigo=${codigo}`;
-    });
-
-    checkInputs();
-  </script>
-
-  <!-- Modal de aviso (enfoque Soluciones Migratorias) -->
-  <div id="welcomeModal" style="
-    position:fixed; inset:0; background:rgba(0,0,0,0.85); display:flex; justify-content:center; align-items:center; z-index:9999;">
-    <div style="background:#fff; padding:32px; border-radius:12px; width: min(900px, 92%); display:flex; gap:20px;">
-      <div style="flex:1;">
-        <h2 style="margin-bottom:14px; font-size:1.75rem; color:#0b2a4a;">Aviso importante</h2>
-        <p style="font-size:1.05rem; margin-bottom:22px; color:#333; line-height:1.6; text-align:justify;">
+  <!-- Modal -->
+  <div id="welcomeModal" class="modal" role="dialog" aria-labelledby="modalTitle" aria-modal="true">
+    <div class="modal-content">
+      <div>
+        <h2 id="modalTitle">Aviso importante</h2>
+        <p>
           Esta plataforma es un servicio de <strong>Soluciones Migratorias</strong> para brindar visibilidad del avance de tu caso.
           La información presentada tiene fines informativos y no reemplaza notificaciones oficiales ni comunicaciones directas
           de nuestro equipo. Ante cualquier duda, contáctanos a través de nuestros canales autorizados.
         </p>
-        <button id="btnAceptar" style="background:#fcd100; color:#111; border:none; padding:12px 28px; font-size:1rem; border-radius:8px; cursor:pointer; font-weight:700;">
-          ACEPTAR
-        </button>
+        <div class="actions">
+          <button id="btnAceptar" class="btn-accept">ACEPTAR</button>
+        </div>
       </div>
-      <div style="flex:1; display:flex; align-items:center; justify-content:center;">
-        <img src="tu-imagen.jpg" alt="Soluciones Migratorias - Atención al cliente" style="max-width:100%; border-radius:8px;">
+      <div class="img-wrap">
+        <img src="tu-imagen.jpg" alt="Soluciones Migratorias - Atención al cliente" style="border-radius:8px; max-height:340px;">
       </div>
     </div>
   </div>
 
   <script>
-    const modal = document.getElementById('welcomeModal');
-    const btnAceptar = document.getElementById('btnAceptar');
-    btnAceptar.addEventListener('click', () => { modal.style.display = 'none'; });
-  </script>
+    // Dropdown accesible en móvil
+    (function(){
+      const btn = document.getElementById('ddBtn');
+      const dd = document.getElementById('dropdown');
+      btn.addEventListener('click', ()=>{
+        const open = dd.style.display === 'block';
+        dd.style.display = open ? 'none' : 'block';
+        btn.setAttribute('aria-expanded', String(!open));
+      });
+      document.addEventListener('click', (e)=>{
+        if (!dd.contains(e.target) && e.target !== btn){
+          dd.style.display = 'none';
+          btn.setAttribute('aria-expanded','false');
+        }
+      });
+      document.addEventListener('keydown', (e)=>{
+        if (e.key === 'Escape'){
+          dd.style.display = 'none';
+          btn.setAttribute('aria-expanded','false');
+        }
+      });
+    })();
 
+    // Inputs código: mobile-first UX
+    (function(){
+      const inputs = document.querySelectorAll('.code-inputs input');
+      const button = document.querySelector('#btnEnviar');
+
+      function sanitizeToDigit(el){ el.value = el.value.replace(/\D/g,'').slice(0,1); }
+      function getCode(){ return Array.from(inputs).map(i=>i.value).join(''); }
+      function updateButton(){
+        const code = getCode();
+        const ok = code.length === inputs.length && /^[0-9]{9}$/.test(code);
+        button.disabled = !ok;
+        button.classList.toggle('enabled', ok);
+      }
+
+      inputs.forEach((input, i) => {
+        input.addEventListener('input', ()=>{
+          sanitizeToDigit(input);
+          if (input.value && inputs[i+1]) inputs[i+1].focus();
+          updateButton();
+        });
+        input.addEventListener('keydown', (e)=>{
+          if (e.key === 'Backspace' && !input.value && inputs[i-1]) inputs[i-1].focus();
+        });
+        input.addEventListener('paste', (e)=>{
+          e.preventDefault();
+          const data = (e.clipboardData.getData('text') || '').replace(/\D/g,'').slice(0, inputs.length);
+          data.split('').forEach((ch, idx)=>{ if(inputs[idx]) inputs[idx].value = ch; });
+          if (inputs[data.length-1]) inputs[data.length-1].focus();
+          updateButton();
+        });
+      });
+
+      button.addEventListener('click', ()=>{
+        const codigo = getCode();
+        if (!/^[0-9]{9}$/.test(codigo)){
+          alert('Número inválido. Deben ser 9 dígitos.');
+          return;
+        }
+        window.location.href = `caso.html?codigo=${codigo}`;
+      });
+
+      updateButton();
+    })();
+
+    // Modal (cerrar en móvil y desktop)
+    (function(){
+      const modal = document.getElementById('welcomeModal');
+      const btnAceptar = document.getElementById('btnAceptar');
+      btnAceptar.addEventListener('click', ()=> modal.style.display = 'none');
+    })();
+  </script>
 </body>
 </html>
