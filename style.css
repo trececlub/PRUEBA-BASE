@@ -215,4 +215,24 @@ footer{
 button, .code-inputs input {
   touch-action: manipulation;
 }
+/* ===== Sección de bienvenida/consulta ===== */
+.left {
+  background: var(--brand-blue, #0a2a43); /* azul corporativo */
+  color: #fff;                            /* texto en blanco */
+  text-align: center;
+  padding: 2rem;
+  border-radius: 8px;
+}
+
+.left h1 {
+  color: #fff;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.left p {
+  color: #f0f0f0; /* un blanco suave para legibilidad */
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
 
