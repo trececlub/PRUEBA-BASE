@@ -4,157 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Soluciones Migratorias | Consulta de Estado de Caso</title>
-  <meta name="description" content="Plataforma móvil de Soluciones Migratorias para que nuestros clientes consulten el estado de su caso de forma segura y clara." />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
-
-  <style>
-    :root{
-      --brand-blue:#0b2a4a;
-      --brand-blue-600:#09365f;
-      --brand-blue-light:#1f4f7a; /* barra informativa */
-      --text:#111;
-      --muted:#444;
-      --bg:#fff;
-      --bg-soft:#f6f8fb;
-      --border:#d9d9d9;
-    }
-
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0; background:var(--bg); color:var(--text);
-      font-family:'Inter', system-ui, -apple-system, Arial, sans-serif;
-      display:flex; flex-direction:column; min-height:100vh;
-    }
-    img{max-width:100%; display:block}
-
-    /* Barra superior */
-    .topbar{
-      background:#000; color:#fff; padding:8px 14px;
-      display:flex; align-items:center; justify-content:flex-start;
-      font-size:clamp(12px, 3.3vw, 14px);
-      position:relative; z-index:5;
-    }
-    .topbar button{
-      background:none; border:none; color:var(--brand-blue-light);
-      font-weight:700; cursor:pointer; padding:6px 8px; border-radius:6px;
-    }
-    .dropdown{
-      position:absolute; left:0; top:100%;
-      background:#222; color:#fff; width:min(92vw, 320px);
-      padding:12px; border-radius:8px; box-shadow:0 6px 18px rgba(0,0,0,.3);
-      display:none; font-size:clamp(12px, 3.4vw, 14px); line-height:1.5;
-    }
-
-    /* Header */
-    header{
-      background:var(--brand-blue); height:64px;
-      display:flex; align-items:center; padding:0 16px;
-    }
-    header img{height:40px; width:auto}
-
-    /* Barra informativa */
-    .promo{
-      background:var(--brand-blue-light); padding:12px 20px;
-      font-weight:700; font-size:clamp(14px, 3.8vw, 16px);
-      text-align:left; color:#fff;
-    }
-    .promo a{color:#fff; text-decoration:underline}
-
-    /* Sección principal */
-    .intro{
-      background:var(--bg-soft); text-align:center; padding:24px 16px;
-    }
-    .intro h1{
-      margin:10px 0 8px;
-      font-size:clamp(20px, 6vw, 32px);
-      color:var(--brand-blue);
-      font-weight:800;
-    }
-    .intro p{
-      margin:0 auto; max-width:58ch;
-      font-size:clamp(14px, 3.8vw, 16px);
-      line-height:1.7; color:#333;
-    }
-    .card{
-      background:#fff; color:var(--text);
-      border-radius:12px; box-shadow:0 8px 30px rgba(0,0,0,.12);
-      margin:16px auto 28px; padding:18px;
-      width:min(92vw, 720px);
-    }
-    .card h2{
-      text-align:center; margin:0 0 12px;
-      color:var(--brand-blue);
-      font-size:clamp(18px, 5.4vw, 26px);
-    }
-    .field-hint{
-      text-align:center; margin:0 0 10px;
-      font-size:clamp(13px, 3.6vw, 15px);
-    }
-    .field-hint .required{ color:#c40000; margin-left:.25rem }
-
-    /* Inputs */
-    .code-inputs{
-      display:flex; justify-content:center; gap:clamp(6px, 2.5vw, 12px);
-      margin:16px 0 18px; flex-wrap:wrap;
-    }
-    .code-inputs input{
-      width:clamp(38px, 10.5vw, 52px);
-      height:clamp(48px, 12.5vw, 62px);
-      text-align:center; font-size:clamp(20px, 6vw, 26px);
-      border:2px solid var(--border); border-radius:8px; outline:none;
-    }
-    .code-inputs input:focus{ border-color:var(--brand-blue) }
-
-    .btn{
-      width:100%; max-width:520px; display:block; margin:0 auto;
-      padding:14px 18px; font-size:clamp(15px, 4.5vw, 17px);
-      border-radius:10px; border:none; font-weight:700;
-      background:#ccc; color:#fff; cursor:not-allowed;
-    }
-    .btn.enabled{ background:var(--brand-blue); cursor:pointer }
-
-    .info{
-      margin-top:12px; font-size:clamp(12px, 3.5vw, 15px);
-      color:var(--muted); display:flex; gap:8px; align-items:flex-start;
-    }
-
-    /* Footer */
-    footer{
-      background:var(--brand-blue); color:#fff; text-align:center; padding:20px;
-      font-size:clamp(12px, 3.3vw, 14px);
-    }
-
-    /* Modal */
-    .modal{
-      position:fixed; inset:0; background:rgba(0,0,0,.85);
-      display:flex; align-items:center; justify-content:center; z-index:9999;
-      padding:16px;
-    }
-    .modal-content{
-      background:#fff; border-radius:12px; width:100%;
-      max-width:900px; padding:20px;
-      display:grid; gap:16px; grid-template-columns:1fr;
-    }
-    .modal h2{
-      margin:0 0 8px; color:var(--brand-blue);
-      font-size:clamp(18px, 5.4vw, 26px);
-    }
-    .modal p{
-      margin:0 0 14px; color:#333; line-height:1.7;
-      font-size:clamp(14px, 3.8vw, 16px); text-align:justify;
-    }
-    .modal .btn-accept{
-      background:var(--brand-blue-light); color:#fff; border:none;
-      padding:12px 18px; border-radius:10px; font-weight:700;
-      font-size:clamp(14px, 4.2vw, 16px); cursor:pointer;
-    }
-    .modal .img-wrap{display:none}
-    @media (min-width:768px){
-      .modal-content{grid-template-columns:1fr 1fr; padding:24px}
-      .modal .img-wrap{display:flex; align-items:center; justify-content:center}
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <!-- Barra superior -->
@@ -184,7 +34,6 @@
   <!-- Sección principal -->
   <main style="flex:1 0 auto;">
     <section class="intro">
-      <!-- Logo en lugar del icono -->
       <img src="logo.png" alt="Soluciones Migratorias - Logo" style="width:90px; margin:0 auto 14px;">
       <h1>Consulta el estado de tu caso</h1>
       <p>
@@ -196,13 +45,11 @@
 
     <section class="card" aria-labelledby="ingreso-caso">
       <h2 id="ingreso-caso">Ingresa tu número de caso</h2>
-
       <p class="field-hint">
         <strong>Número de referencia</strong>
         <span class="required">*</span>
         <a href="#">¿Dónde lo encuentro?</a>
       </p>
-
       <div class="code-inputs">
         <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 1">
         <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 2">
@@ -214,9 +61,7 @@
         <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 8">
         <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 9">
       </div>
-
       <button id="btnEnviar" class="btn" disabled>CONSULTAR</button>
-
       <p class="info">
         <span aria-hidden="true">ℹ️</span>
         La información mostrada en esta plataforma es referencial. Los documentos y notificaciones
@@ -230,7 +75,7 @@
     <p>&copy; 2025 | Soluciones Migratorias</p>
   </footer>
 
-  <!-- Scripts funcionalidad -->
+  <!-- Scripts -->
   <script>
     // Dropdown
     const btn = document.getElementById('ddBtn');
