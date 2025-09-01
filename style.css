@@ -259,4 +259,21 @@ button, .code-inputs input {
 .main-section .left > div {
   background: transparent !important;
 }
+/* ===== Barras superiores: forzar texto en una sola línea ===== */
+.topbar,
+.promo {
+  white-space: nowrap;      /* evita saltos de línea */
+  overflow: hidden;         /* oculta lo que se desborda */
+  text-overflow: ellipsis;  /* agrega "..." si no cabe */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.topbar span,
+.promo a {
+  flex-shrink: 1;           /* que el texto pueda encogerse */
+  min-width: 0;             /* necesario para que ellipsis funcione en flex */
+}
 
