@@ -39,6 +39,9 @@
 
     <h1 style="margin-bottom:20px; color:var(--brand-blue);">Detalle del Caso</h1>
 
+    <!-- Área de estado/errores visible -->
+    <div id="status" style="display:none; margin:10px 0; border:1px solid #e0b4b4; background:#fff6f6; color:#9f3a38; padding:10px; border-radius:8px;"></div>
+
     <!-- Tarjetas APILADAS (una debajo de otra) -->
     <section id="case-details" style="display:flex; flex-direction:column; gap:16px;">
       <!-- Tarjeta 1: Información del Cliente -->
@@ -80,19 +83,23 @@
     });
 
     // ===== Utilidades =====
-    const params = new URLSearchParams(location.search);
-    const codigo = params.get('codigo') || '';
+    const params  = new URLSearchParams(location.search);
+    const codigo  = params.get('codigo') || '';
     const prefijo = codigo ? codigo.substring(0,3) : '';
+    const statusBox = document.getElementById('status');
+
+    function showStatus(msg) {
+      statusBox.style.display = 'block';
+      statusBox.innerHTML = msg;
+    }
 
     // ===== API BASE (Apps Script) =====
+    // OJO: Debe estar publicado "Cualquiera con el vínculo"
     const API_BASE = "https://script.google.com/macros/s/AKfycbysRSYgaPNDUarclwQn2wAJYWzAabZouvP69yCEwgHs8_43zvnct3vYRsx9TYk-g-Sk/exec";
 
-    const SHEET_URLS = {
-      "343": `${API_BASE}?tab=casos`
-    };
-    const SHEET_UPDATES_URLS = {
-      "343": `${API_BASE}?tab=actualizaciones`
-    };
+    // Prefijos → endpoints
+    const SHEET_URLS = { "343": `${API_BASE}?tab=casos` };
+    const SHEET_UPDATES_URLS = { "343": `${API_BASE}?tab=actualizaciones` };
 
     // ===== Helpers de fecha =====
     function isDMYString(s){
@@ -119,9 +126,25 @@
     }
 
     async function fetchJSON(url){
-      const res = await fetch(url, { headers: { 'Accept':'application/json' }});
-      if(!res.ok) throw new Error('HTTP '+res.status);
-      return res.json();
+      console.log("[FETCH]", url);
+      try{
+        const res = await fetch(url, { headers: { 'Accept':'application/json' }});
+        console.log("[STATUS]", res.status, res.statusText);
+        const text = await res.text();
+        console.log("[RAW]", text);
+        try {
+          const data = JSON.parse(text);
+          return data;
+        } catch(parseErr){
+          // Respuesta no JSON (p.ej. HTML de login/permiso)
+          showStatus(`<strong>Respuesta no-JSON de la API.</strong><br>Verifica que tu Web App esté publicado como <em>"Cualquiera con el vínculo"</em> y que la URL /exec sea correcta.<br><br><code>${text.substring(0,500)}</code>`);
+          throw parseErr;
+        }
+      }catch(err){
+        console.error("[FETCH ERROR]", err);
+        showStatus(`Error conectando con la API: <code>${String(err)}</code>`);
+        throw err;
+      }
     }
 
     function renderCliente(row){
@@ -142,13 +165,11 @@
 
     function renderUpdates(list){
       const cont = document.getElementById('updates-list');
-      if(!list || !list.length){
+      if(!Array.isArray(list) || !list.length){
         cont.innerHTML = '<p>No hay actualizaciones registradas.</p>';
         return;
       }
-
       list.sort((a,b)=> toDateObj(b.fecha) - toDateObj(a.fecha));
-
       cont.innerHTML = list.map(u => `
         <div class="update-item" style="display:flex; gap:12px; align-items:flex-start; margin:10px 0;">
           <div class="update-date-box" style="
@@ -169,35 +190,41 @@
     }
 
     async function cargarDatos(){
+      // Validaciones
       if(!codigo){
         document.getElementById('case-details').innerHTML = '<p>Falta el código en la URL.</p>';
         document.getElementById('updates-list').innerHTML = '';
         return;
       }
-      if(!prefijo || !SHEET_URLS[prefijo] || !SHEET_UPDATES_URLS[prefijo]){
-        document.getElementById('case-details').innerHTML = '<p>Prefijo no configurado. Contacte al administrador.</p>';
-        document.getElementById('updates-list').innerHTML = '';
-        return;
-      }
+
+      // Si por alguna razón prefijo no mapea, caemos a endpoints base
+      const baseCasos   = SHEET_URLS[prefijo]        || `${API_BASE}?tab=casos`;
+      const baseUpdates = SHEET_UPDATES_URLS[prefijo] || `${API_BASE}?tab=actualizaciones`;
 
       try{
-        const glue1 = SHEET_URLS[prefijo].includes('?') ? '&' : '?';
-        const casos = await fetchJSON(SHEET_URLS[prefijo] + glue1 + "codigo=" + encodeURIComponent(codigo));
+        const glue1 = baseCasos.includes('?') ? '&' : '?';
+        const urlCasos = baseCasos + glue1 + "codigo=" + encodeURIComponent(codigo);
+        const casos = await fetchJSON(urlCasos);
 
         if(!casos || !casos.length){
           document.getElementById('cliente-info').innerHTML = '<p>No se encontró el caso para este código.</p>';
           document.getElementById('corte-info').innerHTML = '';
           document.getElementById('updates-list').innerHTML = '';
+          showStatus('No hay datos en <code>casos</code> para ese código. Verifica que exista la fila en la pestaña <strong>casos</strong>.');
           return;
         }
         renderCliente(casos[0]);
 
-        const glue2 = SHEET_UPDATES_URLS[prefijo].includes('?') ? '&' : '?';
-        const updates = await fetchJSON(SHEET_UPDATES_URLS[prefijo] + glue2 + "codigo=" + encodeURIComponent(codigo));
+        const glue2 = baseUpdates.includes('?') ? '&' : '?';
+        const urlUpdates = baseUpdates + glue2 + "codigo=" + encodeURIComponent(codigo);
+        const updates = await fetchJSON(urlUpdates);
         renderUpdates(updates || []);
 
       }catch(err){
         console.error(err);
+        if (!statusBox.innerHTML.trim()) {
+          showStatus('Hubo un error conectando con la hoja. Revisa la consola (F12 → Console) para más detalles.');
+        }
         document.getElementById('cliente-info').innerHTML = '<p>Error al conectar con la hoja.</p>';
         document.getElementById('corte-info').innerHTML = '';
         document.getElementById('updates-list').innerHTML = '';
