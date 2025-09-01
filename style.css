@@ -235,4 +235,28 @@ button, .code-inputs input {
   font-size: 1.1rem;
   line-height: 1.6;
 }
+/* === Forzar estilo de la sección "Consulta el estado de tu caso" === */
+.main-section .left {
+  background: var(--brand-blue, #0a2a43) !important; /* azul corporativo */
+  color: #fff !important;
+  text-align: center;
+  padding: 2rem;
+  border-radius: 8px; /* opcional */
+}
+
+.main-section .left h1,
+.main-section .left p,
+.main-section .left a,
+.main-section .left span {
+  color: #fff !important;
+}
+
+.main-section .left p {
+  color: #f0f0f0 !important; /* blanco suave para texto largo */
+}
+
+/* si tienes un contenedor interno, asegúrate de que no imponga fondo */
+.main-section .left > div {
+  background: transparent !important;
+}
 
