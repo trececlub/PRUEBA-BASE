@@ -40,7 +40,7 @@
     <h1 style="margin-bottom:20px; color:var(--brand-blue);">Detalle del Caso</h1>
 
     <!-- Tarjetas superiores -->
-    <section id="case-top">
+    <section id="case-details">
       <!-- Tarjeta 1: Información del Cliente -->
       <div class="card">
         <h2>Información del Cliente</h2>
@@ -70,124 +70,122 @@
 
   <!-- Scripts -->
   <script>
-    // Dropdown
+    // ===== Dropdown superior =====
     const btn = document.getElementById('ddBtn');
-    const dd = document.getElementById('dropdown');
+    const dd  = document.getElementById('dropdown');
     btn.addEventListener('click', ()=>{
       const open = dd.style.display === 'block';
       dd.style.display = open ? 'none' : 'block';
       btn.setAttribute('aria-expanded', String(!open));
     });
 
-    // Utilidades
-    const params = new URLSearchParams(window.location.search);
+    // ===== Utilidades =====
+    const params = new URLSearchParams(location.search);
     const codigo = params.get('codigo') || '';
-    const prefijo = codigo ? codigo.substring(0,3) : null;
+    const prefijo = codigo ? codigo.substring(0,3) : '';
 
-    // Ajusta tus fuentes de datos aquí
+    // Reemplaza estos mapas con tus endpoints REALES (sistema anterior por prefijo).
+    // Ejemplo con SheetDB:
+    // "https://sheetdb.io/api/v1/<ID>?sheet=casos&codigo=" + codigo
+    // "https://sheetdb.io/api/v1/<ID>?sheet=actualizaciones&codigo=" + codigo
     const SHEET_URLS = {
-      // Ejemplo: "123": "https://sheetdb.io/api/v1/xxxxxxx?sheet=casos"
+      // "123": "https://sheetdb.io/api/v1/XXXXXXXX?sheet=casos"
     };
+    const SHEET_UPDATES_URLS = {
+     };
 
-    // Parsear fechas DD/MM/YYYY -> Date
-    function parseDMY(s) {
-      // admite "DD/MM/YYYY" o "D/M/YYYY"
-      const [d,m,y] = s.split('/').map(Number);
-      return new Date(y, (m||1)-1, d||1);
+    function parseDMY(s){
+      if(!s) return new Date(0);
+      const [d,m,y] = String(s).split('/').map(Number);
+      return new Date(y || 1970, (m||1)-1, d || 1);
     }
 
-    function renderCliente(info){
-      // info: { nombre, documento, codigo, direccion, tipo }
+    async function fetchJSON(url){
+      const res = await fetch(url, { headers: { 'Accept':'application/json' }});
+      if(!res.ok) throw new Error('HTTP '+res.status);
+      return res.json();
+    }
+
+    function renderCliente(row){
       document.getElementById('cliente-info').innerHTML = `
-        <p><strong>Nombre:</strong> ${info.nombre || '-'}</p>
-        <p><strong>Documento:</strong> ${info.documento || '-'}</p>
-        <p><strong>Código:</strong> ${info.codigo || '-'}</p>
-        <p><strong>Dirección:</strong> ${info.direccion || '-'}</p>
-        <p><strong>Tipo de Caso:</strong> ${info.tipo || '-'}</p>
+        <p><strong>Nombre:</strong> ${row.nombre || '-'}</p>
+        <p><strong>Documento:</strong> ${row.documento || '-'}</p>
+        <p><strong>Código:</strong> ${row.codigo || '-'}</p>
+        <p><strong>Dirección:</strong> ${row.direccion || '-'}</p>
+        <p><strong>Tipo de Caso:</strong> ${row.tipoCaso || '-'}</p>
       `;
-    }
-
-    function renderCorte(corte){
-      // corte: { fechaCorte, tipoCorte }
       document.getElementById('corte-info').innerHTML = `
-        <p><strong>Fecha de Corte:</strong> ${corte.fechaCorte || '-'}</p>
-        <p><strong>Tipo de Corte:</strong> ${corte.tipoCorte || '-'}</p>
+        <p><strong>Fecha de Corte:</strong> ${row.fechaCorte || '-'}</p>
+        <p><strong>Tipo de Corte:</strong> ${row.tipoCorte || '-'}</p>
+        <p><strong>Estado de Pago:</strong> ${row.estadoPago || '-'}</p>
       `;
     }
 
-    function renderUpdates(updates){
+    function renderUpdates(list){
       const cont = document.getElementById('updates-list');
-      if (!updates || !updates.length){
+      if(!list || !list.length){
         cont.innerHTML = '<p>No hay actualizaciones registradas.</p>';
         return;
       }
-
-      // Ordenar de más reciente a más antigua
-      updates.sort((a,b)=> parseDMY(b.fecha) - parseDMY(a.fecha));
-
-      // Construir lista
-      cont.innerHTML = updates.map(u => {
-        const fecha = u.fecha || '-';
-        const nota = u.nota || '';
-        // Fila con fecha a la izquierda (recuadro) y desplegable a la derecha
-        return `
-          <div class="update-item" style="display:flex; gap:12px; align-items:flex-start; margin:10px 0;">
-            <div class="update-date-box" style="
-              min-width:90px; text-align:center; background:#f6f8fb; color:#111;
-              border:1px solid var(--border); border-radius:8px; padding:8px 10px; font-weight:700;">
-              ${fecha}
-            </div>
-            <details class="update-details" style="flex:1; background:#fff; border:1px solid var(--border); border-radius:8px; padding:10px 12px;">
-              <summary style="cursor:pointer; font-weight:700; color:var(--brand-blue); outline:none;">
-                Ver actualización
-              </summary>
-              <div style="margin-top:8px; color:#333; line-height:1.6;">
-                ${nota}
-              </div>
-            </details>
+      // ordenar de más reciente a más antigua
+      list.sort((a,b)=> parseDMY(b.fecha) - parseDMY(a.fecha));
+      cont.innerHTML = list.map(u => `
+        <div class="update-item" style="display:flex; gap:12px; align-items:flex-start; margin:10px 0;">
+          <div class="update-date-box" style="
+            min-width:90px; text-align:center; background:#f6f8fb; color:#111;
+            border:1px solid var(--border); border-radius:8px; padding:8px 10px; font-weight:700;">
+            ${u.fecha || '-'}
           </div>
-        `;
-      }).join('');
+          <details class="update-details" style="flex:1; background:#fff; border:1px solid var(--border); border-radius:8px; padding:10px 12px;">
+            <summary style="cursor:pointer; font-weight:700; color:var(--brand-blue); outline:none;">
+              Ver actualización
+            </summary>
+            <div style="margin-top:8px; color:#333; line-height:1.6;">
+              ${u.nota ? u.nota : '<em>Sin detalle</em>'}
+            </div>
+          </details>
+        </div>
+      `).join('');
     }
 
     async function cargarDatos(){
-      // Si tienes un sheet por prefijo, úsalo. Si no, mostramos demo.
-      let data = null;
-
-      if (prefijo && SHEET_URLS[prefijo]){
-        try{
-          const res = await fetch(SHEET_URLS[prefijo]);
-          data = await res.json();
-          // TODO: mapear tus campos reales desde el sheet a las estructuras de abajo.
-        }catch(e){
-          console.warn('Error al obtener datos del sheet:', e);
-        }
+      // Validaciones
+      if(!codigo){
+        document.getElementById('case-details').innerHTML = '<p>Falta el código en la URL.</p>';
+        return;
+      }
+      if(!prefijo || !SHEET_URLS[prefijo] || !SHEET_UPDATES_URLS[prefijo]){
+        document.getElementById('case-details').innerHTML = '<p>Prefijo no configurado. Contacte al administrador.</p>';
+        return;
       }
 
-      // DEMO / fallback para visualizar (reemplaza con data real)
-      const clienteDemo = {
-        nombre: 'Juan Pérez',
-        documento: 'CC 123456789',
-        codigo: codigo || '—',
-        direccion: 'Calle 123 #45-67, Miami, FL',
-        tipo: 'Asilo'
-      };
+      try{
+        // 1) Caso (una fila)
+        // Para SheetDB, si no soportas filtro directo por querystring, filtra en cliente:
+        // const casosAll = await fetchJSON(SHEET_URLS[prefijo]);
+        // const casos = casosAll.filter(r => String(r.codigo).trim() === codigo.trim());
+        // Si el proveedor soporta filtro por código (ej: SheetDB con &codigo=):
+        // const casos = await fetchJSON(SHEET_URLS[prefijo] + "&codigo=" + encodeURIComponent(codigo));
 
-      const corteDemo = {
-        fechaCorte: '15/10/2025',
-        tipoCorte: 'Audiencia Inicial'
-      };
+        // Detectemos si la URL ya incluye '?'
+        const glue1 = SHEET_URLS[prefijo].includes('?') ? '&' : '?';
+        const casos = await fetchJSON(SHEET_URLS[prefijo] + glue1 + "codigo=" + encodeURIComponent(codigo));
 
-      const updatesDemo = [
-        { fecha: '01/09/2025', nota: 'Se presentó documentación adicional al tribunal. Se adjuntaron pruebas de domicilio y antecedentes.' },
-        { fecha: '15/08/2025', nota: 'Se programó la audiencia inicial. El cliente fue notificado vía correo electrónico.' },
-        { fecha: '01/08/2025', nota: 'Se radicó la solicitud de asilo ante la autoridad competente.' }
-      ];
+        if(!casos || !casos.length){
+          document.getElementById('case-details').innerHTML = '<p>No se encontró el caso para este código.</p>';
+          return;
+        }
+        renderCliente(casos[0]);
 
-      // Render (usa demo si no hay data real mapeada)
-      renderCliente(clienteDemo);
-      renderCorte(corteDemo);
-      renderUpdates(updatesDemo);
+        // 2) Actualizaciones (0..n filas)
+        const glue2 = SHEET_UPDATES_URLS[prefijo].includes('?') ? '&' : '?';
+        const updates = await fetchJSON(SHEET_UPDATES_URLS[prefijo] + glue2 + "codigo=" + encodeURIComponent(codigo));
+        renderUpdates(updates || []);
+
+      }catch(err){
+        console.error(err);
+        document.getElementById('case-details').innerHTML = '<p>Error al conectar con la hoja. Intenta más tarde.</p>';
+      }
     }
 
     cargarDatos();
