@@ -3,541 +3,192 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sistema de Información</title>
+  <title>Soluciones Migratorias | Consulta de Estado de Caso</title>
+  <meta name="description" content="Plataforma de Soluciones Migratorias para que nuestros clientes consulten el estado de su caso de forma segura y clara." />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-    }
-
-    body {
-      background-color: #fff;
-      color: #000;
-    }
-
-    /* Barra superior fina */
-    .top-bar {
-      background-color: #000;
-      color: #fff;
-      font-size: 0.8rem;
-      padding: 0.5rem 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .menu-icon {
-      cursor: pointer;
-    }
-
- /* Header principal */
-  .header {
-  background-color: #111;
-  padding: 20xp;
-  font-size: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-    .logo {
-      background-color: #fff;
-      color: #000;
-      padding: 0.5rem 1rem;
-      font-weight: bold;
-      font-size: 1.5rem;
-    }
-
-    /* Barra amarilla */
-    .yellow-bar {
-  background-color: #ffd700;
-  padding: 20xp /* duplicamos el alto */
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-    .yellow-bar a {
-      background-color: #fff;
-      color: #000;
-      padding: 0.5rem 1rem;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    /* Sección principal 50/50 */
-    .main-section {
-      display: flex;
-      min-height: 400px;
-    }
-
-    .left {
-      width: 45%;
-      padding: 2rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-     .right {
-  padding: 2rem;
-  background-color: #fff;
-  border-radius: 10px;
-  max-width: 500px;
-  margin: auto;
-  font-family: 'Inter', sans-serif;
-}
-
-.right h2 {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
-}
-
-.right p {
-  margin-bottom: 0.5rem;
-}
-
-.required {
-  color: #d10000;
-  font-size: 0.9rem;
-}
-
-.help {
-  color: #0056b3;
-  text-decoration: none;
-  font-size: 0.9rem;
-  margin-left: 0.5rem;
-}
-
-.code-inputs {
-  display: flex;
-  gap: 10px;
-  margin: 1rem 0;
-}
-
-.code-inputs input {
-  width: 40px;
-  height: 50px;
-  text-align: center;
-  font-size: 1.5rem;
-  border: 2px solid #ccc;
-  border-radius: 5px;
-  outline: none;
-}
-
-.code-inputs input:focus {
-  border-color: #007bff;
-}
-    
-.right button {
-  width: 460px;
-  display: block;
-  margin: 0 auto;
-  padding: 0.8rem 3rem;
-  background-color: #ccc;
-  border: none;
-  color: white;
-  font-weight: bold;
-  font-size: 1rem;
-  cursor: not-allowed;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-}
-
-.right button:enabled {
-  background-color: #000;
-  cursor: pointer;
-}
-
-.info {
-  margin-top: 1rem;
-  font-size: 0.9rem;
-  color: #333;
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  }
-    .right-side {
-  background: linear-gradient(to bottom, #0a2a43, #09223c); /* Fondo azul */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  width: 55%;
-  min-height: 100vh;
-}
-
-.white-box {
-  background: #fff;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
-  max-width: 600px;
-  width: 100%;
-  color: #000;
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* CENTRA EL CONTENIDO HORIZONTALMENTE */
-}
-
-    /* Footer */
-    footer {
-      margin-top: auto;
-    }
-
-    .footer-main {
-      background-color: #000;
-      color: #fff;
-      text-align: center;
-      padding: 2rem 1rem;
-      font-size: 1rem;
-    }
-
-    .footer-bottom {
-      background-color: #111;
-      color: #fff;
-      text-align: center;
-      padding: 1rem;
-      font-size: 0.8rem;
-    }
-
-  @media (max-width: 768px) {
-  .main-content {
-    flex-direction: column;
-  }
-
-  .left-column, .right-column {
-    width: 100%;
-    max-width: 100%;
-    }
-      
-  .code-separator {
-  color: transparent;
-  font-size: 2rem;
-  user-select: none;
-}
-  </style>
 </head>
-<body style="display: flex; flex-direction: column; min-height: 100vh;">
+<body style="display:flex; flex-direction:column; min-height:100vh; font-family:'Inter', system-ui, -apple-system, Arial, sans-serif; background:#fff; color:#111;">
 
-  <div style="background-color: black; color: white; padding: 6px 16px; font-family: sans-serif; display: flex; align-items: center; font-size: 14px;">
-    <span style="margin-right: 10px;">
-      <img src="https://flagcdn.com/us.svg" alt="Bandera Estados Unidos" style="width: 20px; height: 14px; margin-right: 6px; vertical-align: middle;">
-      Información importante para los visitantes
-    </span>
-  
-  <!-- Botón desplegable -->
-  <div style="position: relative;">
-    <button onclick="toggleDropdown()" style="background: none; border: none; color: #ffd700; cursor: pointer; font-weight: bold;">
-      Revisa aquí ▼
-    </button>
-
-    <!-- Contenido desplegable -->
-    <div id="dropdownContent" style="display: none; position: absolute; top: 100%; left: 0; background-color: #222; color: white; padding: 10px; width: 250px; box-shadow: 0 4px 8px rgba(0,0,0,0.3); z-index: 10;">
-      Aquí puedes encontrar información relevante sobre cómo funciona el sistema de infracciones y cómo consultar tu estado actual.
+  <!-- Barra superior (informativa, sin bandera/emoji) -->
+  <div style="background:#000; color:#fff; padding:6px 16px; display:flex; align-items:center; justify-content:space-between; font-size:14px;">
+    <span style="margin-right:10px;">Plataforma exclusiva para clientes de Soluciones Migratorias</span>
+    <div style="position: relative;">
+      <button onclick="toggleDropdown()" style="background:none; border:none; color:#ffd700; cursor:pointer; font-weight:700;">
+        Más información ▼
+      </button>
+      <div id="dropdownContent" style="display:none; position:absolute; top:100%; right:0; background:#222; color:#fff; padding:10px; width:280px; box-shadow:0 4px 8px rgba(0,0,0,0.3); z-index:10; border-radius:6px; font-size:13px; line-height:1.4;">
+        Aquí podrá conocer cómo usar esta plataforma para revisar hitos del proceso, próximas fechas y notas relevantes del equipo legal.
+      </div>
     </div>
   </div>
-</div>
 
-<script>
-  function toggleDropdown() {
-    const dropdown = document.getElementById("dropdownContent");
-    dropdown.style.display = dropdown.style.display === "none" ? "block" : "none";
-  }
-</script>
+  <script>
+    function toggleDropdown() {
+      const dd = document.getElementById("dropdownContent");
+      dd.style.display = (dd.style.display === "none" || dd.style.display === "") ? "block" : "none";
+    }
+    document.addEventListener('click', (e)=>{
+      const dd = document.getElementById("dropdownContent");
+      const btn = e.target.closest('button[onclick="toggleDropdown()"]');
+      if (!btn && dd && dd.style.display === 'block' && !dd.contains(e.target)) dd.style.display = 'none';
+    });
+    document.addEventListener('keydown', (e)=>{
+      if (e.key === 'Escape') {
+        const dd = document.getElementById("dropdownContent");
+        if (dd) dd.style.display = 'none';
+      }
+    });
+  </script>
 
   <!-- Header -->
-<header style="background-color: #111; height: 80px; display: flex; justify-content: flex-start; align-items: center; padding: 0 30px;">
-  <img src="logo.png" alt="Logo" style="height: 50px;">
-</header>
+  <header style="background:#0b2a4a; height:80px; display:flex; align-items:center; padding:0 30px;">
+    <img src="logo.png" alt="Soluciones Migratorias - Logo" style="height:50px;">
+  </header>
 
-  <!-- Barra amarilla -->
-  <section style="background-color: #fcd100; padding: 20px 20px; font-family: Arial, sans-serif;">
-  <div style="color: #111; font-size: 16px; font-weight: bold;">
-    Texto de la barra amarilla | revisa el link:
-    <a href="https://tupagina.com/enlace" target="_blank" style="text-decoration: underline; color: #000;">
-      este es el link
-    </a>
-  </div>
-</section>
+  <!-- Barra amarilla (acceso sitio principal) -->
+  <section style="background:#fcd100; padding:18px 20px;">
+    <div style="color:#111; font-size:16px; font-weight:700;">
+      Nuestra página principal |
+      <a href="https://solucionesmigratorias.us" target="_blank" rel="noopener" style="text-decoration:underline; color:#000;">
+        [Visitar sitio web]
+      </a>
+    </div>
+  </section>
 
-<!-- Sección unificada (texto arriba + tarjeta de código abajo) -->
-<section class="main-section single">
-  <div class="single-wrap">
-    <!-- Intro (texto reducido) -->
-    <div class="intro">
-      <img src="https://img.icons8.com/ios-filled/100/000000/courthouse.png" alt="Icono tribunal" class="intro-icon" />
-      <h1>Información automatizada de casos</h1>
-      <p>
-        Bienvenido al sistema de información automatizada del Tribunal de Inmigración. 
-        La información mostrada corresponde al caso principal. Para audiencias de fianza,
-        comuníquese con su tribunal asignado.
+  <!-- Sección central unificada: texto arriba + tarjeta de consulta -->
+  <section class="main-section" style="flex:1 0 auto;">
+    <!-- Intro -->
+    <div style="background:#f6f8fb; text-align:center; padding:2.4rem 1rem;">
+      <img src="https://img.icons8.com/ios-filled/100/000000/courthouse.png" alt="Icono de justicia" style="width:72px; margin-bottom:1rem;" />
+      <h1 style="font-size:2rem; font-weight:800; margin-bottom:.6rem; color:#0b2a4a;">
+        Consulta el estado de tu caso
+      </h1>
+      <p style="font-size:1.05rem; line-height:1.65; color:#333; max-width:900px; margin:0 auto;">
+        Bienvenido a la plataforma oficial de <strong>Soluciones Migratorias</strong>. Aquí podrás revisar de manera segura
+        el avance de tu proceso, próximas audiencias, documentos clave y notas del equipo legal. Nuestro objetivo es
+        mantenerte informado con claridad y oportunidad.
       </p>
     </div>
 
-    <!-- Tarjeta con el sistema de código (reutiliza tu contenido actual) -->
-    <div class="white-box">
-      <h2>Ingrese su número de registro de Extranjero</h2>
+    <!-- Tarjeta de código -->
+    <div class="white-box" style="background:#fff; padding:2rem; border-radius:12px; box-shadow:0 8px 30px rgba(0,0,0,0.12); max-width:720px; margin:1.25rem auto 2.5rem; color:#111;">
+      <h2 style="font-size:1.6rem; margin-bottom:1rem; text-align:center; color:#0b2a4a;">Ingresa tu número de caso</h2>
 
-      <p>
-        <strong>Número de registro de extranjero</strong>
-        <span class="required">*</span>
-        <a href="#" class="help">¿Qué es un número de inmigrante extranjero?</a>
+      <p style="margin-bottom:.75rem; text-align:center;">
+        <strong>Número de referencia</strong>
+        <span class="required" style="color:#c40000; font-size:0.9rem; margin-left:.25rem;">*Obligatorio</span>
+        <a href="#" class="help" style="color:#0b5acc; text-decoration:none; font-size:0.9rem; margin-left:0.5rem;">
+          ¿Dónde lo encuentro?
+        </a>
       </p>
 
-      <div class="code-inputs">
-        <input type="text" maxlength="1" inputmode="numeric">
-        <input type="text" maxlength="1" inputmode="numeric">
-        <input type="text" maxlength="1" inputmode="numeric">
-        <input type="text" maxlength="1" inputmode="numeric">
-        <input type="text" maxlength="1" inputmode="numeric">
-        <input type="text" maxlength="1" inputmode="numeric">
-        <input type="text" maxlength="1" inputmode="numeric">
-        <input type="text" maxlength="1" inputmode="numeric">
-        <input type="text" maxlength="1" inputmode="numeric">
+      <div class="code-inputs" style="display:flex; gap:12px; justify-content:center; margin:1.25rem 0 1.5rem;">
+        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 1" style="width:50px; height:60px; font-size:1.6rem; text-align:center; border:2px solid #d9d9d9; border-radius:6px;">
+        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 2" style="width:50px; height:60px; font-size:1.6rem; text-align:center; border:2px solid #d9d9d9; border-radius:6px;">
+        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 3" style="width:50px; height:60px; font-size:1.6rem; text-align:center; border:2px solid #d9d9d9; border-radius:6px;">
+        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 4" style="width:50px; height:60px; font-size:1.6rem; text-align:center; border:2px solid #d9d9d9; border-radius:6px;">
+        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 5" style="width:50px; height:60px; font-size:1.6rem; text-align:center; border:2px solid #d9d9d9; border-radius:6px;">
+        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 6" style="width:50px; height:60px; font-size:1.6rem; text-align:center; border:2px solid #d9d9d9; border-radius:6px;">
+        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 7" style="width:50px; height:60px; font-size:1.6rem; text-align:center; border:2px solid #d9d9d9; border-radius:6px;">
+        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 8" style="width:50px; height:60px; font-size:1.6rem; text-align:center; border:2px solid #d9d9d9; border-radius:6px;">
+        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 9" style="width:50px; height:60px; font-size:1.6rem; text-align:center; border:2px solid #d9d9d9; border-radius:6px;">
       </div>
 
-      <button id="btnEnviar" disabled>ENVIAR</button>
+      <button id="btnEnviar" disabled
+        style="width:100%; max-width:520px; display:block; margin:0 auto; padding:1rem; font-size:1.05rem; border-radius:8px; background:#ccc; color:#fff; border:none; cursor:not-allowed; font-weight:700;">
+        CONSULTAR
+      </button>
 
-      <p class="info">
-        <span class="icon">ℹ️</span>
-        La información sobre el caso que aparece en este sistema automatizado se provee solo para su conveniencia. 
-        Los documentos emitidos por el tribunal de inmigración o el tribunal de apelaciones son los únicos de carácter oficial.
+      <p class="info" style="margin-top:1rem; font-size:0.95rem; color:#444; display:flex; align-items:flex-start; gap:8px;">
+        <span aria-hidden="true">ℹ️</span>
+        La información mostrada en esta plataforma es referencial. Los documentos y notificaciones
+        oficiales seguirán siendo los emitidos por las autoridades competentes o enviados por nuestro equipo legal.
       </p>
     </div>
-  </div>
-</section>
+  </section>
 
-  
-<!-- FOOTER -->
-<footer class="site-footer">
-  <style>
-    .site-footer {
-      background-color: #1a1a1a;
-      color: #fff;
-      font-family: Arial, sans-serif;
-      padding: 40px 20px;
-      font-size: 14px;
+  <!-- Footer simplificado -->
+  <footer style="background:#111; color:#fff; text-align:center; padding:20px; font-size:14px;">
+    <p>&copy; 2025 | Soluciones Migratorias</p>
+  </footer>
+
+  <!-- Funcionalidad de inputs y consulta -->
+  <script>
+    // Inputs y botón
+    const inputs = document.querySelectorAll('.code-inputs input');
+    const button = document.querySelector('#btnEnviar');
+
+    function sanitizeToDigit(el) {
+      el.value = el.value.replace(/\D/g, '').slice(0, 1);
+    }
+    function getCode() {
+      return Array.from(inputs).map(i => i.value).join('');
+    }
+    function checkInputs() {
+      const code = getCode();
+      const ok = code.length === inputs.length && /^[0-9]{9}$/.test(code);
+      button.disabled = !ok;
+      button.style.backgroundColor = ok ? '#0b2a4a' : '#ccc';
+      button.style.cursor = ok ? 'pointer' : 'not-allowed';
     }
 
-    .footer-top {
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-    }
-
-    .footer-column {
-      display: flex;
-      flex-direction: column;
-      width: 22%;
-      margin-bottom: 20px;
-    }
-
-    .footer-column a {
-      color: #ffffff;
-      text-decoration: underline;
-      margin-bottom: 6px;
-      transition: color 0.2s ease;
-    }
-
-    .footer-column a:hover {
-      color: #0af;
-    }
-
-    .footer-divider {
-      border: none;
-      margin: 0;
-    }
-
-    .footer-bottom {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .footer-info p {
-      margin: 3px 0;
-      color: #ccc;
-    }
-
-    .footer-branding {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: #fff;
-    }
-
-    .footer-logo {
-      height: 30px;
-    }
-
-    @media (max-width: 768px) {
-      .footer-column {
-        width: 100%;
-      }
-      .footer-bottom {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-      }
-    }
-  </style>
-
-  <div class="footer-top">
-    <div class="footer-column">
-      <a href="#">Archivo</a>
-      <a href="#">Accesibilidad</a>
-      <a href="#">Calidad de Información</a>
-      <a href="#">Política de Privacidad</a>
-      <a href="#">Políticas Legales</a>
-    </div>
-    <div class="footer-column">
-      <a href="#">Redes Sociales</a>
-      <a href="#">Presupuesto</a>
-      <a href="#">Inspector General</a>
-      <a href="#">No FEAR Act</a>
-      <a href="#">Para Empleados</a>
-    </div>
-    <div class="footer-column">
-      <a href="#">Ley FOIA</a>
-      <a href="#">USA.gov</a>
-      <a href="#">Contacto</a>
-      <a href="#">Principal EOIR</a>
-      <a href="#">Justice.gov</a>
-    </div>
-    <div class="footer-column">
-      <a href="#">Recursos Corte</a>
-      <a href="#">Asistencia Técnica</a>
-      <a href="#">hCaptcha</a>
-      <a href="#">Política hCaptcha</a>
-      <a href="#">Términos hCaptcha</a>
-    </div>
-  </div>
-
-  <hr class="footer-divider">
-
-  <div class="footer-bottom">
-    <div class="footer-info">
-      <p>Department of Justice | Executive Office for Review</p>
-      <p><em>&copy; 2025</em></p>
-    </div>
-    <div class="footer-branding">
-      <img src="ruta-a-tu-logo.png" alt="Logo" class="footer-logo">
-      <span><strong>CLUB TRECE</strong> | Acceso seguro</span>
-    </div>
-  </div>
-</footer>
-
- <script>
-  const inputs = document.querySelectorAll('.code-inputs input');
-  const button = document.querySelector('#btnEnviar');
-
-  // Verifica que todos los inputs estén llenos
-  function checkInputs() {
-    const allFilled = Array.from(inputs).every(input => input.value.trim().length === 1);
-    button.disabled = !allFilled;
-    button.style.backgroundColor = allFilled ? '#007bff' : '#ccc';
-    button.style.cursor = allFilled ? 'pointer' : 'not-allowed';
-  }
-
-  // Avanza automáticamente al siguiente input
-  inputs.forEach((input, index) => {
-    input.addEventListener('input', () => {
-      if (input.value.length === 1) {
-        let nextInput = inputs[index + 1];
-        if (nextInput) nextInput.focus();
-      }
-      checkInputs();
+    inputs.forEach((input, i) => {
+      input.addEventListener('input', () => {
+        sanitizeToDigit(input);
+        if (input.value && inputs[i + 1]) inputs[i + 1].focus();
+        checkInputs();
+      });
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && !input.value && inputs[i - 1]) inputs[i - 1].focus();
+      });
+      input.addEventListener('paste', (e) => {
+        e.preventDefault();
+        const data = (e.clipboardData.getData('text') || '').replace(/\D/g, '').slice(0, inputs.length);
+        data.split('').forEach((ch, idx) => { if (inputs[idx]) inputs[idx].value = ch; });
+        if (inputs[data.length - 1]) inputs[data.length - 1].focus();
+        checkInputs();
+      });
     });
-  });
 
- // 👉 Acción al presionar ENVIAR con prefijo incluido
-button.addEventListener('click', () => {
-  const codigo = Array.from(inputs).map(input => input.value).join('');
+    button.addEventListener('click', () => {
+      const codigo = getCode();
+      if (!/^[0-9]{9}$/.test(codigo)) {
+        alert("Número inválido. Deben ser 9 dígitos.");
+        return;
+      }
+      // Redirección a la página del caso
+      window.location.href = `caso.html?codigo=${codigo}`;
+    });
 
-  if (codigo.length < 3) {
-    alert("Código inválido");
-    return;
-  }
+    checkInputs();
+  </script>
 
-  // Envía el código completo a caso.html
-  window.location.href = `caso.html?codigo=${codigo}`;
-});
-  checkInputs(); // Ejecuta validación al cargar
-</script>
- 
-<!-- Modal de Descargo de Responsabilidad -->
-<div id="welcomeModal" style="
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.85);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-">
-  <div style="
-    background: white;
-    padding: 40px;
-    border-radius: 10px;
-    width: 70%;
-    max-width: 900px;
-    display: flex;
-    gap: 20px;
-    font-family: 'Inter', sans-serif;
-  ">
-    <!-- Columna de texto -->
-    <div style="flex: 1;">
-      <h2 style="margin-bottom: 20px; font-size: 2rem; color:#111;">
-        Descargo de Responsabilidad
-      </h2>
-      <p style="font-size: 1.2rem; margin-bottom: 30px; color:#333; text-align: justify;">
-        La información proporcionada en este sistema es únicamente de carácter informativo y 
-        no constituye un documento oficial. Los datos aquí mostrados pueden no estar 
-        actualizados y no sustituyen los documentos emitidos directamente por el tribunal 
-        de inmigración o la junta de apelaciones. El usuario es responsable de verificar 
-        la información oficial directamente con las autoridades competentes.
-      </p>
-      <button id="btnAceptar" style="
-        background: #007bff;
-        color: white;
-        border: none;
-        padding: 15px 40px;
-        font-size: 1.2rem;
-        border-radius: 6px;
-        cursor: pointer;
-      ">ACEPTAR</button>
-    </div>
-
-    <!-- Columna de imagen -->
-    <div style="flex: 1; display:flex; align-items:center; justify-content:center;">
-      <img src="tu-imagen.jpg" alt="Imagen descriptiva" style="max-width:100%; border-radius:8px;">
+  <!-- Modal de aviso (enfoque Soluciones Migratorias) -->
+  <div id="welcomeModal" style="
+    position:fixed; inset:0; background:rgba(0,0,0,0.85); display:flex; justify-content:center; align-items:center; z-index:9999;">
+    <div style="background:#fff; padding:32px; border-radius:12px; width: min(900px, 92%); display:flex; gap:20px;">
+      <div style="flex:1;">
+        <h2 style="margin-bottom:14px; font-size:1.75rem; color:#0b2a4a;">Aviso importante</h2>
+        <p style="font-size:1.05rem; margin-bottom:22px; color:#333; line-height:1.6; text-align:justify;">
+          Esta plataforma es un servicio de <strong>Soluciones Migratorias</strong> para brindar visibilidad del avance de tu caso.
+          La información presentada tiene fines informativos y no reemplaza notificaciones oficiales ni comunicaciones directas
+          de nuestro equipo. Ante cualquier duda, contáctanos a través de nuestros canales autorizados.
+        </p>
+        <button id="btnAceptar" style="background:#fcd100; color:#111; border:none; padding:12px 28px; font-size:1rem; border-radius:8px; cursor:pointer; font-weight:700;">
+          ACEPTAR
+        </button>
+      </div>
+      <div style="flex:1; display:flex; align-items:center; justify-content:center;">
+        <img src="tu-imagen.jpg" alt="Soluciones Migratorias - Atención al cliente" style="max-width:100%; border-radius:8px;">
+      </div>
     </div>
   </div>
-</div>
 
-<script>
-  const modal = document.getElementById('welcomeModal');
-  const btnAceptar = document.getElementById('btnAceptar');
+  <script>
+    const modal = document.getElementById('welcomeModal');
+    const btnAceptar = document.getElementById('btnAceptar');
+    btnAceptar.addEventListener('click', () => { modal.style.display = 'none'; });
+  </script>
 
-  // Solo se puede cerrar con el botón Aceptar
-  btnAceptar.addEventListener('click', () => {
-    modal.style.display = 'none';
-  });
-
-  // No se cierra al hacer clic fuera
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) {
-      // No permitir cierre al hacer clic fuera
-    }
-  });
-</script>
 </body>
 </html>
