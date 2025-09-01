@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Información del Caso</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+    body { background: #fff; color: #000; display: flex; flex-direction: column; min-height: 100vh; }
+
+    /* Barra negra superior */
+   .top-bar { 
+  background: #000; 
+  color: #fff; 
+  font-size: 0.8rem; 
+  padding: 6px 16px; 
+  display: flex; 
+  align-items: center; 
+  gap: 10px;               /* espacio entre el texto y el botón */
+  justify-content: flex-start; /* alinear texto y botón juntos a la izquierda */
+}
+    /* Header */
+    header { background-color: #111; height: 80px; display: flex; align-items: center; padding: 0 30px; }
+    header img { height: 50px; }
+
+    /* Barra amarilla */
+    .yellow-bar { background-color: #fcd100; padding: 20px 20px; font-family: Arial, sans-serif; }
+    .yellow-bar a { text-decoration: underline; color: #000; font-weight: bold; }
+
+    /* CONTENIDO CENTRAL */
+    .content-area {
+      background: #e9f0f7;
+      padding: 30px;
+      flex: 1;
+    }
+    .breadcrumb {
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+    }
+    .breadcrumb a {
+      text-decoration: none;
+      color: #0073aa;
+      font-weight: bold;
+    }
+
+.title-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.title-section img {
+  width: 80px;
+  margin-bottom: 10px;
+}
+
+.title-section h2 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.title-section p {
+  font-size: 2rem;       /* tamaño grande pero proporcionado */
+  line-height: 2.4rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  white-space: normal;   /* permite dividir en varias líneas si es necesario */
+  text-align: center;
+}
+
+.cards-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  max-width: 1600px;
+  margin: auto;
+  padding: 10px;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #d1d1d1;
+  border-radius: 6px;
+  min-height: 45vh;
+  position: relative;
+  padding: 60px 30px 30px 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center; /* para centrar texto */
+  flex-direction: column; /* por si hay más de un elemento */
+}
+
+.card h3 {
+  font-size: 1.3rem;
+  font-weight: bold;
+  position: absolute;
+  top: 15px;
+  left: 20px;
+  margin: 0;
+  text-align: left; /* título sigue a la izquierda */
+}
+
+.card p {
+  font-size: 1.15rem;
+  line-height: 2rem; /* buen interlineado */
+  margin-top: 10px;
+  max-width: 90%; /* para que el texto no sea muy ancho */
+}
+
+.card.empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #888;
+  text-align: center;
+}
+    @media(max-width: 768px) {
+      .cards-container { grid-template-columns: 1fr; }
+    }
+
+    /* Footer */
+    footer.site-footer { background-color: #1a1a1a; color: #fff; font-family: Arial, sans-serif; padding: 40px 20px; font-size: 14px; }
+    .footer-top { display: flex; justify-content: space-between; flex-wrap: wrap; }
+    .footer-column { display: flex; flex-direction: column; width: 22%; margin-bottom: 20px; }
+    .footer-column a { color: #fff; text-decoration: underline; margin-bottom: 6px; }
+    .footer-divider { border: none; border-top: 1px solid #444; margin: 20px 0; }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+    .footer-info p { margin: 3px 0; color: #ccc; }
+    .footer-branding { display: flex; align-items: center; gap: 8px; color: #fff; }
+    .footer-logo { height: 30px; }
+
+    @media (max-width: 768px) {
+      .footer-column { width: 100%; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; gap: 10px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Barra negra superior -->
+  <div class="top-bar">
+    <span>Información importante para los visitantes</span>
+    <button onclick="toggleDropdown()" style="background:none; border:none; color:#ffd700; cursor:pointer; font-weight:bold;">Revisa aquí ▼</button>
+  </div>
+  <div id="dropdownContent" style="display:none; background-color:#222; color:white; padding:10px; text-align:center;">
+    Aquí puedes encontrar información relevante sobre cómo funciona el sistema de infracciones y cómo consultar tu estado actual.
+  </div>
+
+  <!-- Header -->
+  <header>
+    <img src="logo.png" alt="Logo">
+  </header>
+
+  <!-- Barra amarilla -->
+  <section class="yellow-bar">
+    <div>Texto de la barra amarilla | revisa el link: 
+      <a href="https://tupagina.com/enlace" target="_blank">este es el link</a>
+    </div>
+  </section>
+
+  <!-- SECCION CENTRAL -->
+  <section class="content-area">
+    <div class="breadcrumb">
+      <a href="index.html">Inicio</a> > <span id="nombreBreadcrumb"></span>
+    </div>
+
+    <div class="title-section">
+      <img src="https://img.icons8.com/ios-filled/50/000000/courthouse.png" alt="icono" />
+      <h2>Información automatizada de casos</h2>
+      <p>
+        Nombre: <strong id="nombre"></strong> | 
+        Número de registro de extranjero: <strong id="registro"></strong> | 
+        Fecha de la lista de causas: <strong id="fecha"></strong>
+      </p>
+    </div>
+
+    <div class="cards-container">
+      <!-- TARJETA 1 -->
+      <div class="card">
+        <h3>📅 Información acerca de la próxima audiencia</h3>
+        <p id="audiencia"></p>
+      </div>
+
+      <!-- TARJETA 2 -->
+      <div class="card">
+        <h3>⚖️ Información sobre Pedimentos y Fallos Judiciales</h3>
+        <p id="fallos"></p>
+      </div>
+
+      <!-- TARJETA 3 -->
+      <div class="card">
+        <h3>📝 Información de un caso ante la Junta de Apelaciones de Inmigración</h3>
+        <p id="apelacion"></p>
+      </div>
+
+      <!-- TARJETA 4 -->
+      <div class="card">
+        <h3>🏛️ Datos Personales</h3>
+        <p><strong>Nombre:</strong> <span id="nombreDP"></span></p>
+        <p><strong>Identificación:</strong> <span id="identificacion"></span></p>
+        <p><strong>Dirección:</strong> <span id="direccion"></span></p>
+        <p><strong>Estatus:</strong> <span id="estatus"></span></p>
+      </div>
+    </div>
+  </section>
+
+ <!-- FOOTER -->
+<footer class="site-footer">
+  <style>
+    .site-footer {
+      background-color: #1a1a1a;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      padding: 40px 20px;
+      font-size: 14px;
+    }
+
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .footer-column {
+      display: flex;
+      flex-direction: column;
+      width: 22%;
+      margin-bottom: 20px;
+    }
+
+    .footer-column a {
+      color: #ffffff;
+      text-decoration: underline;
+      margin-bottom: 6px;
+      transition: color 0.2s ease;
+    }
+
+    .footer-column a:hover {
+      color: #0af;
+    }
+
+    .footer-divider {
+      border: none;
+      margin: 0;
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .footer-info p {
+      margin: 3px 0;
+      color: #ccc;
+    }
+
+    .footer-branding {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #fff;
+    }
+
+    .footer-logo {
+      height: 30px;
+    }
+
+    @media (max-width: 768px) {
+      .footer-column {
+        width: 100%;
+      }
+      .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+    }
+  </style>
+
+  <div class="footer-top">
+    <div class="footer-column">
+      <a href="#">Archivo</a>
+      <a href="#">Accesibilidad</a>
+      <a href="#">Calidad de Información</a>
+      <a href="#">Política de Privacidad</a>
+      <a href="#">Políticas Legales</a>
+    </div>
+    <div class="footer-column">
+      <a href="#">Redes Sociales</a>
+      <a href="#">Presupuesto</a>
+      <a href="#">Inspector General</a>
+      <a href="#">No FEAR Act</a>
+      <a href="#">Para Empleados</a>
+    </div>
+    <div class="footer-column">
+      <a href="#">Ley FOIA</a>
+      <a href="#">USA.gov</a>
+      <a href="#">Contacto</a>
+      <a href="#">Principal EOIR</a>
+      <a href="#">Justice.gov</a>
+    </div>
+    <div class="footer-column">
+      <a href="#">Recursos Corte</a>
+      <a href="#">Asistencia Técnica</a>
+      <a href="#">hCaptcha</a>
+      <a href="#">Política hCaptcha</a>
+      <a href="#">Términos hCaptcha</a>
+    </div>
+  </div>
+
+  <hr class="footer-divider">
+
+  <div class="footer-bottom">
+    <div class="footer-info">
+      <p>Department of Justice | Executive Office for Review</p>
+      <p><em>&copy; 2025</em></p>
+    </div>
+    <div class="footer-branding">
+      <img src="ruta-a-tu-logo.png" alt="Logo" class="footer-logo">
+      <span><strong>CLUB TRECE</strong> | Acceso seguro</span>
+    </div>
+  </div>
+</footer>
+
+  <script>
+    function toggleDropdown() {
+      const dropdown = document.getElementById("dropdownContent");
+      dropdown.style.display = dropdown.style.display === "none" ? "block" : "none";
+    }
+
+    // --- Prefijos y URLs ---
+    const SHEET_URLS = {
+      "343": "https://api.sheetbest.com/sheets/9d3c9e1c-5a86-4486-ae79-5083b68fd706",
+      "159": "https://api.sheetbest.com/sheets/49f53c4b-823a-4c11-bfa7-010af63e6e0e",
+      "303": "URL_JSON_SHEET_3"
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    const codigo = params.get("codigo");
+
+    if (!codigo || codigo.length < 3) {
+      alert("Código inválido");
+    } else {
+      const prefijo = codigo.substring(0, 3); // primeros 3 caracteres
+      const SHEET_URL = SHEET_URLS[prefijo];
+
+      if (!SHEET_URL) {
+        alert("Prefijo inválido o no encontrado.");
+      } else {
+        fetch(SHEET_URL)
+          .then(res => res.json())
+          .then(data => {
+            const caso = data.find(item => item.CODIGO === codigo);
+
+            if (caso) {
+              // Breadcrumb y título
+              document.getElementById("nombreBreadcrumb").textContent = `${caso.NOMBRE} (${caso.REGISTRO})`;
+              document.getElementById("nombre").textContent = caso.NOMBRE;
+              document.getElementById("registro").textContent = caso.REGISTRO;
+              document.getElementById("fecha").textContent = caso.FECHA;
+
+              // Tarjeta 1 - Audiencia + juez
+              if (!caso.FECHA_AUDIENCIA) {
+                document.getElementById("audiencia").textContent = "No hay audiencias futuras para este caso.";
+              } else {
+                document.getElementById("audiencia").innerHTML = `
+                  Fecha: <strong>${caso.FECHA_AUDIENCIA}</strong><br>
+                  Hora: <strong>${caso.HORA_AUDIENCIA}</strong><br>
+                  Tipo de corte: <strong>${caso.TIPO_CORTE}</strong><br>
+                  Juez: <strong>${caso.JUEZ_AUDIENCIA || "No especificado"}</strong>
+                `;
+              }
+
+              // Tarjeta 2
+              document.getElementById("fallos").innerHTML = `
+                El juez de inmigración <strong>${caso.ESTADO_CASO}</strong>.<br>
+                Fecha del fallo: <strong>${caso.FECHA_FALLO}</strong>.<br>
+                Tipo de audiencia: ${caso.TIPO_AUDIENCIA}.<br>
+                Pedimento: <strong>${caso.ESTADO_PEDIMENTO}</strong> el ${caso.FECHA_PEDIMENTO}.
+              `;
+
+              // Tarjeta 3
+              document.getElementById("apelacion").innerHTML = `
+                La apelación del caso fue <strong>${caso.ESTADO_APELACION}</strong> el ${caso.FECHA_APELACION}.
+              `;
+
+              // Tarjeta 4 - Datos personales
+              document.getElementById("nombreDP").textContent = caso.NOMBRE;
+              document.getElementById("identificacion").textContent = caso.IDENTIFICACION;
+              document.getElementById("direccion").textContent = caso.DIRECCION;
+              document.getElementById("estatus").textContent = caso.ESTATUS;
+            } else {
+              alert("No se encontró información del caso.");
+            }
+          });
+      }
+    }
+  </script>
+</body>
+</html>
