@@ -84,12 +84,10 @@
     const codigo = params.get('codigo') || '';
     const prefijo = codigo ? codigo.substring(0,3) : '';
 
-    // ======= API BASE (Apps Script) =======
-    // Reemplaza TU_EXEC_AQUI por la URL /exec de tu despliegue de Apps Script:
-    const API_BASE = "https://script.google.com/macros/s/TU_EXEC_AQUI/exec";
+    // ===== API BASE (Apps Script) =====
+    const API_BASE = "https://script.google.com/macros/s/AKfycbysRSYgaPNDUarclwQn2wAJYWzAabZouvP69yCEwgHs8_43zvnct3vYRsx9TYk-g-Sk/exec";
 
-    // ======= Endpoints por prefijo (no cambié la estructura, solo la completé) =======
-    // Si manejas más prefijos, agrega más entradas: "999": `${API_BASE}?tab=casos`, etc.
+    // Prefijos → endpoints (sin cambiar tu estructura)
     const SHEET_URLS = {
       "343": `${API_BASE}?tab=casos`
     };
