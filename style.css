@@ -173,3 +173,46 @@ footer{
   word-wrap:break-word; /* corta palabras largas si hace falta */
   z-index:999;
 }
+/* ===== CÓDIGO DE INGRESO (desktop/base) ===== */
+.code-inputs{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: nowrap;         /* no permitir salto de línea */
+}
+.code-inputs input{
+  width: 48px;
+  height: 56px;
+  text-align: center;
+  font-size: 20px;           /* >=16px para evitar zoom en iOS */
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+}
+.code-inputs input:focus{
+  border-color: var(--brand-blue, #0a58ca);
+}
+
+/* ===== MÓVIL: todas en una fila ajustando ancho automáticamente ===== */
+@media (max-width: 480px){
+  .code-inputs{
+    gap: 6px;
+    padding: 0 16px; /* margen lateral para el cálculo */
+  }
+  /* 
+     ancho = (ancho viewport - paddings laterales - total de gaps) / 9
+     gaps: 8 separaciones de 6px = 48px
+  */
+  .code-inputs input{
+    width: calc((100vw - 32px - 48px) / 9);
+    height: clamp(40px, 12vw, 56px);
+    font-size: clamp(16px, 4.2vw, 18px);
+  }
+}
+
+/* opcional: bloquear zoom doble-tap en iOS (si usas botón) */
+button, .code-inputs input {
+  touch-action: manipulation;
+}
+
