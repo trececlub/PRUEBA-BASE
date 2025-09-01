@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Soluciones Migratorias | Consulta de Estado de Caso</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Barra superior -->
+  <div class="topbar">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span>Plataforma exclusiva para clientes de Soluciones Migratorias</span>
+      <div style="position:relative;">
+        <button id="ddBtn" aria-expanded="false" aria-controls="dropdown">Más información ▼</button>
+        <div id="dropdown" class="dropdown">
+          Aquí podrá conocer cómo usar esta plataforma para revisar hitos del proceso, próximas fechas y notas relevantes del equipo legal.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <img src="logo.png" alt="Soluciones Migratorias - Logo">
+  </header>
+
+  <!-- Barra informativa -->
+  <section class="promo">
+    Nuestra página principal |
+    <a href="https://solucionesmigratorias.us" target="_blank" rel="noopener">[Visitar sitio web]</a>
+  </section>
+
+  <!-- Sección principal -->
+  <main style="flex:1 0 auto;">
+    <section class="intro">
+      <img src="logo.png" alt="Soluciones Migratorias - Logo" style="width:90px; margin:0 auto 14px;">
+      <h1>Consulta el estado de tu caso</h1>
+      <p>
+        Bienvenido a la plataforma oficial de <strong>Soluciones Migratorias</strong>. Aquí podrás revisar de manera segura
+        el avance de tu proceso, próximas audiencias, documentos clave y notas del equipo legal. Nuestro objetivo es
+        mantenerte informado con claridad y oportunidad.
+      </p>
+    </section>
+
+    <section class="card" aria-labelledby="ingreso-caso">
+      <h2 id="ingreso-caso">Ingresa tu número de caso</h2>
+      <p class="field-hint">
+        <strong>Número de referencia</strong>
+        <span class="required">*</span>
+        <a href="#">¿Dónde lo encuentro?</a>
+      </p>
+      <div class="code-inputs">
+        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 1">
+        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 2">
+        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 3">
+        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 4">
+        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 5">
+        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 6">
+        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 7">
+        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 8">
+        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 9">
+      </div>
+      <button id="btnEnviar" class="btn" disabled>CONSULTAR</button>
+      <p class="info">
+        <span aria-hidden="true">ℹ️</span>
+        La información mostrada en esta plataforma es referencial. Los documentos y notificaciones
+        oficiales seguirán siendo los emitidos por las autoridades competentes o enviados por nuestro equipo legal.
+      </p>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 | Soluciones Migratorias</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Dropdown
+    const btn = document.getElementById('ddBtn');
+    const dd = document.getElementById('dropdown');
+    btn.addEventListener('click', ()=>{
+      const open = dd.style.display === 'block';
+      dd.style.display = open ? 'none' : 'block';
+      btn.setAttribute('aria-expanded', String(!open));
+    });
+
+    // Inputs código
+    const inputs = document.querySelectorAll('.code-inputs input');
+    const button = document.querySelector('#btnEnviar');
+    function sanitizeToDigit(el){ el.value = el.value.replace(/\D/g,'').slice(0,1); }
+    function getCode(){ return Array.from(inputs).map(i=>i.value).join(''); }
+    function updateButton(){
+      const code = getCode();
+      const ok = code.length === inputs.length && /^[0-9]{9}$/.test(code);
+      button.disabled = !ok;
+      button.classList.toggle('enabled', ok);
+    }
+    inputs.forEach((input, i) => {
+      input.addEventListener('input', ()=>{
+        sanitizeToDigit(input);
+        if (input.value && inputs[i+1]) inputs[i+1].focus();
+        updateButton();
+      });
+      input.addEventListener('keydown', (e)=>{
+        if (e.key === 'Backspace' && !input.value && inputs[i-1]) inputs[i-1].focus();
+      });
+      input.addEventListener('paste', (e)=>{
+        e.preventDefault();
+        const data = (e.clipboardData.getData('text') || '').replace(/\D/g,'').slice(0, inputs.length);
+        data.split('').forEach((ch, idx)=>{ if(inputs[idx]) inputs[idx].value = ch; });
+        if (inputs[data.length-1]) inputs[data.length-1].focus();
+        updateButton();
+      });
+    });
+    button.addEventListener('click', ()=>{
+      const codigo = getCode();
+      if (!/^[0-9]{9}$/.test(codigo)){
+        alert('Número inválido. Deben ser 9 dígitos.');
+        return;
+      }
+      window.location.href = `caso.html?codigo=${codigo}`;
+    });
+  </script>
+</body>
+</html>
