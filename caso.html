@@ -41,24 +41,24 @@
 
     <!-- Contenedor de resultados -->
     <section id="case-details">
+      <!-- Tarjeta 1: Información del Cliente -->
       <div class="card">
-        <h2>Próxima Audiencia</h2>
-        <div id="audiencia-info"></div>
+        <h2>Información del Cliente</h2>
+        <div id="cliente-info"></div>
       </div>
 
+      <!-- Tarjeta 2: Fechas de Cortes y Estado de Pago -->
       <div class="card">
-        <h2>Pedimentos y Fallos Judiciales</h2>
-        <div id="fallos-info"></div>
+        <h2>Fechas de Cortes y Estado de Pago</h2>
+        <div id="corte-pago-info"></div>
       </div>
+    </section>
 
-      <div class="card">
-        <h2>Información de Apelación</h2>
-        <div id="apelacion-info"></div>
-      </div>
-
-      <div class="card">
-        <h2>Datos Personales</h2>
-        <div id="datos-info"></div>
+    <!-- Nueva sección de actualizaciones -->
+    <section class="card" style="margin-top:24px;">
+      <h2>Actualizaciones del Caso</h2>
+      <div id="updates-info">
+        <p>No hay actualizaciones registradas.</p>
       </div>
     </section>
   </main>
@@ -82,14 +82,11 @@
     // Leer código desde la URL
     const params = new URLSearchParams(window.location.search);
     const codigo = params.get('codigo');
-
-    // Prefijo para seleccionar sheet
     const prefijo = codigo ? codigo.substring(0,3) : null;
 
-    // Configuración de Google Sheets (ajusta según tus sheets)
+    // Configuración de Google Sheets (ejemplo)
     const SHEET_URLS = {
       "123": "https://sheetdb.io/api/v1/xxxxxxxx?sheet=casos"
-      // Agrega más prefijos según necesidad
     };
 
     async function cargarDatos(){
@@ -102,11 +99,31 @@
         const res = await fetch(SHEET_URLS[prefijo]);
         const data = await res.json();
 
-        // Simulación de datos
-        document.getElementById("audiencia-info").innerHTML = "<p>Fecha: 15/10/2025 - Tribunal de Inmigración</p>";
-        document.getElementById("fallos-info").innerHTML = "<p>Solicitud de asilo en proceso.</p>";
-        document.getElementById("apelacion-info").innerHTML = "<p>No aplica actualmente.</p>";
-        document.getElementById("datos-info").innerHTML = "<p>Cliente: Juan Pérez | Código: "+codigo+"</p>";
+        // Ejemplo de simulación
+        document.getElementById("cliente-info").innerHTML = `
+          <p><strong>Cliente:</strong> Juan Pérez</p>
+          <p><strong>Código de Caso:</strong> ${codigo}</p>
+          <p><strong>Tipo de Proceso:</strong> Asilo</p>
+          <p><strong>Abogado Asignado:</strong> Dra. Valeria García</p>
+        `;
+
+        document.getElementById("corte-pago-info").innerHTML = `
+          <p><strong>Próxima Audiencia:</strong> 15/10/2025</p>
+          <p><strong>Tribunal:</strong> Corte de Inmigración - Miami</p>
+          <p><strong>Estado de Pago:</strong> Al día</p>
+        `;
+
+        // Actualizaciones (ejemplo dinámico)
+        const updates = [
+          { fecha: "01/09/2025", nota: "Se presentó documentación adicional al tribunal." },
+          { fecha: "15/08/2025", nota: "Se programó la audiencia inicial." }
+        ];
+
+        if(updates.length > 0){
+          document.getElementById("updates-info").innerHTML = updates.map(u =>
+            `<p><strong>${u.fecha}:</strong> ${u.nota}</p>`
+          ).join("");
+        }
 
       } catch(e){
         document.getElementById("case-details").innerHTML = "<p>Error al cargar la información.</p>";
