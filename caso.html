@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Detalle del Caso | Soluciones Migratorias</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <!-- Barra superior -->
@@ -31,7 +31,7 @@
     <a href="https://solucionesmigratorias.us" target="_blank" rel="noopener">[Visitar sitio web]</a>
   </section>
 
-  <!-- Sección principal -->
+  <!-- Contenido principal -->
   <main style="flex:1 0 auto; padding:20px;">
     <nav style="margin-bottom:20px; font-size:14px;">
       <a href="index.html">Inicio</a> > <span>Detalle del Caso</span>
@@ -39,25 +39,25 @@
 
     <h1 style="margin-bottom:20px; color:var(--brand-blue);">Detalle del Caso</h1>
 
-    <!-- Contenedor de resultados -->
-    <section id="case-details">
+    <!-- Tarjetas superiores -->
+    <section id="case-top">
       <!-- Tarjeta 1: Información del Cliente -->
       <div class="card">
         <h2>Información del Cliente</h2>
         <div id="cliente-info"></div>
       </div>
 
-      <!-- Tarjeta 2: Fechas de Cortes y Estado de Pago -->
+      <!-- Tarjeta 2: Fechas de Corte -->
       <div class="card">
-        <h2>Fechas de Cortes y Estado de Pago</h2>
-        <div id="corte-pago-info"></div>
+        <h2>Fechas de Corte</h2>
+        <div id="corte-info"></div>
       </div>
     </section>
 
-    <!-- Nueva sección de actualizaciones -->
+    <!-- Actualizaciones -->
     <section class="card" style="margin-top:24px;">
       <h2>Actualizaciones del Caso</h2>
-      <div id="updates-info">
+      <div id="updates-list">
         <p>No hay actualizaciones registradas.</p>
       </div>
     </section>
@@ -79,55 +79,115 @@
       btn.setAttribute('aria-expanded', String(!open));
     });
 
-    // Leer código desde la URL
+    // Utilidades
     const params = new URLSearchParams(window.location.search);
-    const codigo = params.get('codigo');
+    const codigo = params.get('codigo') || '';
     const prefijo = codigo ? codigo.substring(0,3) : null;
 
-    // Configuración de Google Sheets (ejemplo)
+    // Ajusta tus fuentes de datos aquí
     const SHEET_URLS = {
-      "123": "https://sheetdb.io/api/v1/xxxxxxxx?sheet=casos"
+      // Ejemplo: "123": "https://sheetdb.io/api/v1/xxxxxxx?sheet=casos"
     };
 
-    async function cargarDatos(){
-      if(!codigo || !prefijo || !SHEET_URLS[prefijo]){
-        document.getElementById("case-details").innerHTML = "<p>No se encontraron datos para este código.</p>";
+    // Parsear fechas DD/MM/YYYY -> Date
+    function parseDMY(s) {
+      // admite "DD/MM/YYYY" o "D/M/YYYY"
+      const [d,m,y] = s.split('/').map(Number);
+      return new Date(y, (m||1)-1, d||1);
+    }
+
+    function renderCliente(info){
+      // info: { nombre, documento, codigo, direccion, tipo }
+      document.getElementById('cliente-info').innerHTML = `
+        <p><strong>Nombre:</strong> ${info.nombre || '-'}</p>
+        <p><strong>Documento:</strong> ${info.documento || '-'}</p>
+        <p><strong>Código:</strong> ${info.codigo || '-'}</p>
+        <p><strong>Dirección:</strong> ${info.direccion || '-'}</p>
+        <p><strong>Tipo de Caso:</strong> ${info.tipo || '-'}</p>
+      `;
+    }
+
+    function renderCorte(corte){
+      // corte: { fechaCorte, tipoCorte }
+      document.getElementById('corte-info').innerHTML = `
+        <p><strong>Fecha de Corte:</strong> ${corte.fechaCorte || '-'}</p>
+        <p><strong>Tipo de Corte:</strong> ${corte.tipoCorte || '-'}</p>
+      `;
+    }
+
+    function renderUpdates(updates){
+      const cont = document.getElementById('updates-list');
+      if (!updates || !updates.length){
+        cont.innerHTML = '<p>No hay actualizaciones registradas.</p>';
         return;
       }
 
-      try {
-        const res = await fetch(SHEET_URLS[prefijo]);
-        const data = await res.json();
+      // Ordenar de más reciente a más antigua
+      updates.sort((a,b)=> parseDMY(b.fecha) - parseDMY(a.fecha));
 
-        // Ejemplo de simulación
-        document.getElementById("cliente-info").innerHTML = `
-          <p><strong>Cliente:</strong> Juan Pérez</p>
-          <p><strong>Código de Caso:</strong> ${codigo}</p>
-          <p><strong>Tipo de Proceso:</strong> Asilo</p>
-          <p><strong>Abogado Asignado:</strong> Dra. Valeria García</p>
+      // Construir lista
+      cont.innerHTML = updates.map(u => {
+        const fecha = u.fecha || '-';
+        const nota = u.nota || '';
+        // Fila con fecha a la izquierda (recuadro) y desplegable a la derecha
+        return `
+          <div class="update-item" style="display:flex; gap:12px; align-items:flex-start; margin:10px 0;">
+            <div class="update-date-box" style="
+              min-width:90px; text-align:center; background:#f6f8fb; color:#111;
+              border:1px solid var(--border); border-radius:8px; padding:8px 10px; font-weight:700;">
+              ${fecha}
+            </div>
+            <details class="update-details" style="flex:1; background:#fff; border:1px solid var(--border); border-radius:8px; padding:10px 12px;">
+              <summary style="cursor:pointer; font-weight:700; color:var(--brand-blue); outline:none;">
+                Ver actualización
+              </summary>
+              <div style="margin-top:8px; color:#333; line-height:1.6;">
+                ${nota}
+              </div>
+            </details>
+          </div>
         `;
+      }).join('');
+    }
 
-        document.getElementById("corte-pago-info").innerHTML = `
-          <p><strong>Próxima Audiencia:</strong> 15/10/2025</p>
-          <p><strong>Tribunal:</strong> Corte de Inmigración - Miami</p>
-          <p><strong>Estado de Pago:</strong> Al día</p>
-        `;
+    async function cargarDatos(){
+      // Si tienes un sheet por prefijo, úsalo. Si no, mostramos demo.
+      let data = null;
 
-        // Actualizaciones (ejemplo dinámico)
-        const updates = [
-          { fecha: "01/09/2025", nota: "Se presentó documentación adicional al tribunal." },
-          { fecha: "15/08/2025", nota: "Se programó la audiencia inicial." }
-        ];
-
-        if(updates.length > 0){
-          document.getElementById("updates-info").innerHTML = updates.map(u =>
-            `<p><strong>${u.fecha}:</strong> ${u.nota}</p>`
-          ).join("");
+      if (prefijo && SHEET_URLS[prefijo]){
+        try{
+          const res = await fetch(SHEET_URLS[prefijo]);
+          data = await res.json();
+          // TODO: mapear tus campos reales desde el sheet a las estructuras de abajo.
+        }catch(e){
+          console.warn('Error al obtener datos del sheet:', e);
         }
-
-      } catch(e){
-        document.getElementById("case-details").innerHTML = "<p>Error al cargar la información.</p>";
       }
+
+      // DEMO / fallback para visualizar (reemplaza con data real)
+      const clienteDemo = {
+        nombre: 'Juan Pérez',
+        documento: 'CC 123456789',
+        codigo: codigo || '—',
+        direccion: 'Calle 123 #45-67, Miami, FL',
+        tipo: 'Asilo'
+      };
+
+      const corteDemo = {
+        fechaCorte: '15/10/2025',
+        tipoCorte: 'Audiencia Inicial'
+      };
+
+      const updatesDemo = [
+        { fecha: '01/09/2025', nota: 'Se presentó documentación adicional al tribunal. Se adjuntaron pruebas de domicilio y antecedentes.' },
+        { fecha: '15/08/2025', nota: 'Se programó la audiencia inicial. El cliente fue notificado vía correo electrónico.' },
+        { fecha: '01/08/2025', nota: 'Se radicó la solicitud de asilo ante la autoridad competente.' }
+      ];
+
+      // Render (usa demo si no hay data real mapeada)
+      renderCliente(clienteDemo);
+      renderCorte(corteDemo);
+      renderUpdates(updatesDemo);
     }
 
     cargarDatos();
