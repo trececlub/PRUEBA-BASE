@@ -11,38 +11,36 @@
     :root{
       --brand-blue:#0b2a4a;
       --brand-blue-600:#09365f;
-      --accent:#fcd100;
+      --brand-blue-light:#1f4f7a; /* barra informativa */
       --text:#111;
       --muted:#444;
       --bg:#fff;
       --bg-soft:#f6f8fb;
       --border:#d9d9d9;
     }
-    /* Reset básico y mobile-first */
+
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0; background:var(--bg); color:var(--text);
       font-family:'Inter', system-ui, -apple-system, Arial, sans-serif;
       display:flex; flex-direction:column; min-height:100vh;
-      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
     }
     img{max-width:100%; display:block}
-    a{color:inherit}
 
     /* Barra superior */
     .topbar{
       background:#000; color:#fff; padding:8px 14px;
-      display:flex; align-items:center; justify-content:space-between;
+      display:flex; align-items:center; justify-content:flex-start;
       font-size:clamp(12px, 3.3vw, 14px);
       position:relative; z-index:5;
     }
     .topbar button{
-      background:none; border:none; color:var(--accent);
+      background:none; border:none; color:var(--brand-blue-light);
       font-weight:700; cursor:pointer; padding:6px 8px; border-radius:6px;
     }
     .dropdown{
-      position:absolute; right:10px; top:100%;
+      position:absolute; left:0; top:100%;
       background:#222; color:#fff; width:min(92vw, 320px);
       padding:12px; border-radius:8px; box-shadow:0 6px 18px rgba(0,0,0,.3);
       display:none; font-size:clamp(12px, 3.4vw, 14px); line-height:1.5;
@@ -55,13 +53,13 @@
     }
     header img{height:40px; width:auto}
 
-    /* Barra amarilla */
+    /* Barra informativa */
     .promo{
-      background:var(--accent); padding:12px 16px;
+      background:var(--brand-blue-light); padding:12px 20px;
       font-weight:700; font-size:clamp(14px, 3.8vw, 16px);
-      text-align:center;
+      text-align:left; color:#fff;
     }
-    .promo a{color:#000; text-decoration:underline}
+    .promo a{color:#fff; text-decoration:underline}
 
     /* Sección principal */
     .intro{
@@ -95,7 +93,7 @@
     }
     .field-hint .required{ color:#c40000; margin-left:.25rem }
 
-    /* Inputs de código (mobile-friendly) */
+    /* Inputs */
     .code-inputs{
       display:flex; justify-content:center; gap:clamp(6px, 2.5vw, 12px);
       margin:16px 0 18px; flex-wrap:wrap;
@@ -113,10 +111,8 @@
       padding:14px 18px; font-size:clamp(15px, 4.5vw, 17px);
       border-radius:10px; border:none; font-weight:700;
       background:#ccc; color:#fff; cursor:not-allowed;
-      transition:background .2s ease;
     }
     .btn.enabled{ background:var(--brand-blue); cursor:pointer }
-    .btn.enabled:active{ background:var(--brand-blue-600) }
 
     .info{
       margin-top:12px; font-size:clamp(12px, 3.5vw, 15px);
@@ -125,7 +121,7 @@
 
     /* Footer */
     footer{
-      background:#111; color:#fff; text-align:center; padding:16px;
+      background:var(--brand-blue); color:#fff; text-align:center; padding:20px;
       font-size:clamp(12px, 3.3vw, 14px);
     }
 
@@ -148,38 +144,28 @@
       margin:0 0 14px; color:#333; line-height:1.7;
       font-size:clamp(14px, 3.8vw, 16px); text-align:justify;
     }
-    .modal .actions{display:flex; justify-content:flex-start}
     .modal .btn-accept{
-      background:var(--accent); color:#111; border:none;
+      background:var(--brand-blue-light); color:#fff; border:none;
       padding:12px 18px; border-radius:10px; font-weight:700;
       font-size:clamp(14px, 4.2vw, 16px); cursor:pointer;
     }
     .modal .img-wrap{display:none}
-
-    /* Mejora en pantallas medianas y grandes */
-    @media (min-width: 768px){
-      header{height:80px; padding:0 30px}
-      header img{height:50px}
-      .card{padding:24px}
+    @media (min-width:768px){
       .modal-content{grid-template-columns:1fr 1fr; padding:24px}
       .modal .img-wrap{display:flex; align-items:center; justify-content:center}
-    }
-
-    /* Accesibilidad: evita animaciones forzadas */
-    @media (prefers-reduced-motion: reduce){
-      *{transition:none !important; animation:none !important}
     }
   </style>
 </head>
 <body>
-
   <!-- Barra superior -->
   <div class="topbar">
-    <span>Plataforma exclusiva para clientes de Soluciones Migratorias</span>
-    <div style="position:relative">
-      <button id="ddBtn" aria-expanded="false" aria-controls="dropdown">Más información ▼</button>
-      <div id="dropdown" class="dropdown" role="region">
-        Aquí podrá conocer cómo usar esta plataforma para revisar hitos del proceso, próximas fechas y notas relevantes del equipo legal.
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span>Plataforma exclusiva para clientes de Soluciones Migratorias</span>
+      <div style="position:relative;">
+        <button id="ddBtn" aria-expanded="false" aria-controls="dropdown">Más información ▼</button>
+        <div id="dropdown" class="dropdown">
+          Aquí podrá conocer cómo usar esta plataforma para revisar hitos del proceso, próximas fechas y notas relevantes del equipo legal.
+        </div>
       </div>
     </div>
   </div>
@@ -189,7 +175,7 @@
     <img src="logo.png" alt="Soluciones Migratorias - Logo">
   </header>
 
-  <!-- Barra amarilla -->
+  <!-- Barra informativa -->
   <section class="promo">
     Nuestra página principal |
     <a href="https://solucionesmigratorias.us" target="_blank" rel="noopener">[Visitar sitio web]</a>
@@ -198,7 +184,8 @@
   <!-- Sección principal -->
   <main style="flex:1 0 auto;">
     <section class="intro">
-      <img src="https://img.icons8.com/ios-filled/100/000000/courthouse.png" alt="Icono de justicia" style="width:64px; margin:0 auto 10px;">
+      <!-- Logo en lugar del icono -->
+      <img src="logo.png" alt="Soluciones Migratorias - Logo" style="width:90px; margin:0 auto 14px;">
       <h1>Consulta el estado de tu caso</h1>
       <p>
         Bienvenido a la plataforma oficial de <strong>Soluciones Migratorias</strong>. Aquí podrás revisar de manera segura
@@ -213,19 +200,19 @@
       <p class="field-hint">
         <strong>Número de referencia</strong>
         <span class="required">*</span>
-        <a href="#" style="color:#0b5acc; text-decoration:none;">¿Dónde lo encuentro?</a>
+        <a href="#">¿Dónde lo encuentro?</a>
       </p>
 
-      <div class="code-inputs" aria-label="Ingresar 9 dígitos del número de caso">
-        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" aria-label="Dígito 1">
-        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" aria-label="Dígito 2">
-        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" aria-label="Dígito 3">
-        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" aria-label="Dígito 4">
-        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" aria-label="Dígito 5">
-        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" aria-label="Dígito 6">
-        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" aria-label="Dígito 7">
-        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" aria-label="Dígito 8">
-        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" aria-label="Dígito 9">
+      <div class="code-inputs">
+        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 1">
+        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 2">
+        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 3">
+        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 4">
+        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 5">
+        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 6">
+        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 7">
+        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 8">
+        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 9">
       </div>
 
       <button id="btnEnviar" class="btn" disabled>CONSULTAR</button>
@@ -243,100 +230,53 @@
     <p>&copy; 2025 | Soluciones Migratorias</p>
   </footer>
 
-  <!-- Modal -->
-  <div id="welcomeModal" class="modal" role="dialog" aria-labelledby="modalTitle" aria-modal="true">
-    <div class="modal-content">
-      <div>
-        <h2 id="modalTitle">Aviso importante</h2>
-        <p>
-          Esta plataforma es un servicio de <strong>Soluciones Migratorias</strong> para brindar visibilidad del avance de tu caso.
-          La información presentada tiene fines informativos y no reemplaza notificaciones oficiales ni comunicaciones directas
-          de nuestro equipo. Ante cualquier duda, contáctanos a través de nuestros canales autorizados.
-        </p>
-        <div class="actions">
-          <button id="btnAceptar" class="btn-accept">ACEPTAR</button>
-        </div>
-      </div>
-      <div class="img-wrap">
-        <img src="tu-imagen.jpg" alt="Soluciones Migratorias - Atención al cliente" style="border-radius:8px; max-height:340px;">
-      </div>
-    </div>
-  </div>
-
+  <!-- Scripts funcionalidad -->
   <script>
-    // Dropdown accesible en móvil
-    (function(){
-      const btn = document.getElementById('ddBtn');
-      const dd = document.getElementById('dropdown');
-      btn.addEventListener('click', ()=>{
-        const open = dd.style.display === 'block';
-        dd.style.display = open ? 'none' : 'block';
-        btn.setAttribute('aria-expanded', String(!open));
-      });
-      document.addEventListener('click', (e)=>{
-        if (!dd.contains(e.target) && e.target !== btn){
-          dd.style.display = 'none';
-          btn.setAttribute('aria-expanded','false');
-        }
-      });
-      document.addEventListener('keydown', (e)=>{
-        if (e.key === 'Escape'){
-          dd.style.display = 'none';
-          btn.setAttribute('aria-expanded','false');
-        }
-      });
-    })();
+    // Dropdown
+    const btn = document.getElementById('ddBtn');
+    const dd = document.getElementById('dropdown');
+    btn.addEventListener('click', ()=>{
+      const open = dd.style.display === 'block';
+      dd.style.display = open ? 'none' : 'block';
+      btn.setAttribute('aria-expanded', String(!open));
+    });
 
-    // Inputs código: mobile-first UX
-    (function(){
-      const inputs = document.querySelectorAll('.code-inputs input');
-      const button = document.querySelector('#btnEnviar');
-
-      function sanitizeToDigit(el){ el.value = el.value.replace(/\D/g,'').slice(0,1); }
-      function getCode(){ return Array.from(inputs).map(i=>i.value).join(''); }
-      function updateButton(){
-        const code = getCode();
-        const ok = code.length === inputs.length && /^[0-9]{9}$/.test(code);
-        button.disabled = !ok;
-        button.classList.toggle('enabled', ok);
+    // Inputs código
+    const inputs = document.querySelectorAll('.code-inputs input');
+    const button = document.querySelector('#btnEnviar');
+    function sanitizeToDigit(el){ el.value = el.value.replace(/\D/g,'').slice(0,1); }
+    function getCode(){ return Array.from(inputs).map(i=>i.value).join(''); }
+    function updateButton(){
+      const code = getCode();
+      const ok = code.length === inputs.length && /^[0-9]{9}$/.test(code);
+      button.disabled = !ok;
+      button.classList.toggle('enabled', ok);
+    }
+    inputs.forEach((input, i) => {
+      input.addEventListener('input', ()=>{
+        sanitizeToDigit(input);
+        if (input.value && inputs[i+1]) inputs[i+1].focus();
+        updateButton();
+      });
+      input.addEventListener('keydown', (e)=>{
+        if (e.key === 'Backspace' && !input.value && inputs[i-1]) inputs[i-1].focus();
+      });
+      input.addEventListener('paste', (e)=>{
+        e.preventDefault();
+        const data = (e.clipboardData.getData('text') || '').replace(/\D/g,'').slice(0, inputs.length);
+        data.split('').forEach((ch, idx)=>{ if(inputs[idx]) inputs[idx].value = ch; });
+        if (inputs[data.length-1]) inputs[data.length-1].focus();
+        updateButton();
+      });
+    });
+    button.addEventListener('click', ()=>{
+      const codigo = getCode();
+      if (!/^[0-9]{9}$/.test(codigo)){
+        alert('Número inválido. Deben ser 9 dígitos.');
+        return;
       }
-
-      inputs.forEach((input, i) => {
-        input.addEventListener('input', ()=>{
-          sanitizeToDigit(input);
-          if (input.value && inputs[i+1]) inputs[i+1].focus();
-          updateButton();
-        });
-        input.addEventListener('keydown', (e)=>{
-          if (e.key === 'Backspace' && !input.value && inputs[i-1]) inputs[i-1].focus();
-        });
-        input.addEventListener('paste', (e)=>{
-          e.preventDefault();
-          const data = (e.clipboardData.getData('text') || '').replace(/\D/g,'').slice(0, inputs.length);
-          data.split('').forEach((ch, idx)=>{ if(inputs[idx]) inputs[idx].value = ch; });
-          if (inputs[data.length-1]) inputs[data.length-1].focus();
-          updateButton();
-        });
-      });
-
-      button.addEventListener('click', ()=>{
-        const codigo = getCode();
-        if (!/^[0-9]{9}$/.test(codigo)){
-          alert('Número inválido. Deben ser 9 dígitos.');
-          return;
-        }
-        window.location.href = `caso.html?codigo=${codigo}`;
-      });
-
-      updateButton();
-    })();
-
-    // Modal (cerrar en móvil y desktop)
-    (function(){
-      const modal = document.getElementById('welcomeModal');
-      const btnAceptar = document.getElementById('btnAceptar');
-      btnAceptar.addEventListener('click', ()=> modal.style.display = 'none');
-    })();
+      window.location.href = `caso.html?codigo=${codigo}`;
+    });
   </script>
 </body>
 </html>
