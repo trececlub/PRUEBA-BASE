@@ -84,10 +84,9 @@
     const codigo = params.get('codigo') || '';
     const prefijo = codigo ? codigo.substring(0,3) : '';
 
-    // ===== API BASE (Apps Script) PEGADA =====
+    // ===== API BASE (Apps Script) =====
     const API_BASE = "https://script.google.com/macros/s/AKfycbysRSYgaPNDUarclwQn2wAJYWzAabZouvP69yCEwgHs8_43zvnct3vYRsx9TYk-g-Sk/exec";
 
-    // Prefijos → endpoints (manteniendo tu estructura original por prefijo)
     const SHEET_URLS = {
       "343": `${API_BASE}?tab=casos`
     };
@@ -95,10 +94,28 @@
       "343": `${API_BASE}?tab=actualizaciones`
     };
 
-    function parseDMY(s){
-      if(!s) return new Date(0);
-      const [d,m,y] = String(s).split('/').map(Number);
-      return new Date(y || 1970, (m||1)-1, d || 1);
+    // ===== Helpers de fecha =====
+    function isDMYString(s){
+      return /^\d{1,2}\/\d{1,2}\/\d{4}$/.test(String(s||'').trim());
+    }
+    function toDateObj(value){
+      if (!value) return new Date(0);
+      const s = String(value).trim();
+      if (isDMYString(s)) {
+        const [d,m,y] = s.split('/').map(Number);
+        return new Date(y,(m||1)-1,d||1);
+      }
+      const d = new Date(s);
+      return isNaN(d.getTime()) ? new Date(0) : d;
+    }
+    function formatOnlyDate(value){
+      if (!value) return '';
+      if (isDMYString(value)) return String(value).trim();
+      const d = toDateObj(value);
+      const day   = String(d.getDate()).padStart(2,'0');
+      const month = String(d.getMonth()+1).padStart(2,'0');
+      const year  = d.getFullYear();
+      return `${day}/${month}/${year}`;
     }
 
     async function fetchJSON(url){
@@ -114,10 +131,10 @@
         <p><strong>Código:</strong> ${row.codigo || '-'}</p>
         <p><strong>Dirección:</strong> ${row.direccion || '-'}</p>
         <p><strong>Tipo de Caso:</strong> ${row.tipoCaso || '-'}</p>
-        <p><strong>Abogado Asignado:</strong> ${row.abogadoAsignado || '-'}</p> <!-- ⬅️ AGREGADO -->
+        <p><strong>Abogado Asignado:</strong> ${row.abogadoAsignado || '-'}</p>
       `;
       document.getElementById('corte-info').innerHTML = `
-        <p><strong>Fecha de Corte:</strong> ${row.fechaCorte || '-'}</p>
+        <p><strong>Fecha de Corte:</strong> ${row.fechaCorte ? formatOnlyDate(row.fechaCorte) : '-'}</p>
         <p><strong>Tipo de Corte:</strong> ${row.tipoCorte || '-'}</p>
         <p><strong>Estado de Pago:</strong> ${row.estadoPago || '-'}</p>
       `;
@@ -129,14 +146,15 @@
         cont.innerHTML = '<p>No hay actualizaciones registradas.</p>';
         return;
       }
-      // ordenar de más reciente a más antigua
-      list.sort((a,b)=> parseDMY(b.fecha) - parseDMY(a.fecha));
+
+      list.sort((a,b)=> toDateObj(b.fecha) - toDateObj(a.fecha));
+
       cont.innerHTML = list.map(u => `
         <div class="update-item" style="display:flex; gap:12px; align-items:flex-start; margin:10px 0;">
           <div class="update-date-box" style="
             min-width:90px; text-align:center; background:#f6f8fb; color:#111;
             border:1px solid var(--border); border-radius:8px; padding:8px 10px; font-weight:700;">
-            ${u.fecha || '-'}
+            ${formatOnlyDate(u.fecha) || '-'}
           </div>
           <details class="update-details" style="flex:1; background:#fff; border:1px solid var(--border); border-radius:8px; padding:10px 12px;">
             <summary style="cursor:pointer; font-weight:700; color:var(--brand-blue); outline:none;">
@@ -151,7 +169,6 @@
     }
 
     async function cargarDatos(){
-      // Validaciones
       if(!codigo){
         document.getElementById('case-details').innerHTML = '<p>Falta el código en la URL.</p>';
         document.getElementById('updates-list').innerHTML = '';
@@ -164,7 +181,6 @@
       }
 
       try{
-        // 1) Caso (una fila)
         const glue1 = SHEET_URLS[prefijo].includes('?') ? '&' : '?';
         const casos = await fetchJSON(SHEET_URLS[prefijo] + glue1 + "codigo=" + encodeURIComponent(codigo));
 
@@ -176,7 +192,6 @@
         }
         renderCliente(casos[0]);
 
-        // 2) Actualizaciones (0..n filas)
         const glue2 = SHEET_UPDATES_URLS[prefijo].includes('?') ? '&' : '?';
         const updates = await fetchJSON(SHEET_UPDATES_URLS[prefijo] + glue2 + "codigo=" + encodeURIComponent(codigo));
         renderUpdates(updates || []);
