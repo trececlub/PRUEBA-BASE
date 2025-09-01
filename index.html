@@ -74,6 +74,23 @@
   <footer>
     <p>&copy; 2025 | Soluciones Migratorias</p>
   </footer>
+  <!-- Modal de descargo de responsabilidad -->
+<div id="welcomeModal" class="modal" role="dialog" aria-labelledby="modalTitle" aria-modal="true">
+  <div class="modal-content">
+    <div>
+      <h2 id="modalTitle">Aviso importante</h2>
+      <p>
+        Esta plataforma es un servicio de <strong>Soluciones Migratorias</strong> para brindar visibilidad del avance de tu caso.
+        La información presentada tiene fines informativos y no reemplaza notificaciones oficiales ni comunicaciones directas
+        de nuestro equipo. Ante cualquier duda, contáctanos por los canales autorizados.
+      </p>
+      <button id="btnAceptar" class="btn-accept">ACEPTAR</button>
+    </div>
+    <div class="img-wrap">
+      <img src="tu-imagen.jpg" alt="Soluciones Migratorias - Atención al cliente" style="border-radius:8px; max-height:340px;">
+    </div>
+  </div>
+</div>
 
   <!-- Scripts -->
   <script>
@@ -122,6 +139,15 @@
       }
       window.location.href = `caso.html?codigo=${codigo}`;
     });
+    document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('welcomeModal');
+    const btnAceptar = document.getElementById('btnAceptar');
+    // Mostrar siempre al cargar
+    modal.style.display = 'flex';
+    // Cerrar sólo con ACEPTAR
+    btnAceptar.addEventListener('click', () => { modal.style.display = 'none'; });
+  });
   </script>
+  
 </body>
 </html>
