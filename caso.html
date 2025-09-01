@@ -84,15 +84,18 @@
     const codigo = params.get('codigo') || '';
     const prefijo = codigo ? codigo.substring(0,3) : '';
 
-    // Reemplaza estos mapas con tus endpoints REALES (sistema anterior por prefijo).
-    // Ejemplo con SheetDB:
-    // "https://sheetdb.io/api/v1/<ID>?sheet=casos&codigo=" + codigo
-    // "https://sheetdb.io/api/v1/<ID>?sheet=actualizaciones&codigo=" + codigo
+    // ======= API BASE (Apps Script) =======
+    // Reemplaza TU_EXEC_AQUI por la URL /exec de tu despliegue de Apps Script:
+    const API_BASE = "https://script.google.com/macros/s/TU_EXEC_AQUI/exec";
+
+    // ======= Endpoints por prefijo (no cambié la estructura, solo la completé) =======
+    // Si manejas más prefijos, agrega más entradas: "999": `${API_BASE}?tab=casos`, etc.
     const SHEET_URLS = {
-      // "123": "https://sheetdb.io/api/v1/XXXXXXXX?sheet=casos"
+      "343": `${API_BASE}?tab=casos`
     };
     const SHEET_UPDATES_URLS = {
-     };
+      "343": `${API_BASE}?tab=actualizaciones`
+    };
 
     function parseDMY(s){
       if(!s) return new Date(0);
@@ -161,13 +164,6 @@
 
       try{
         // 1) Caso (una fila)
-        // Para SheetDB, si no soportas filtro directo por querystring, filtra en cliente:
-        // const casosAll = await fetchJSON(SHEET_URLS[prefijo]);
-        // const casos = casosAll.filter(r => String(r.codigo).trim() === codigo.trim());
-        // Si el proveedor soporta filtro por código (ej: SheetDB con &codigo=):
-        // const casos = await fetchJSON(SHEET_URLS[prefijo] + "&codigo=" + encodeURIComponent(codigo));
-
-        // Detectemos si la URL ya incluye '?'
         const glue1 = SHEET_URLS[prefijo].includes('?') ? '&' : '?';
         const casos = await fetchJSON(SHEET_URLS[prefijo] + glue1 + "codigo=" + encodeURIComponent(codigo));
 
