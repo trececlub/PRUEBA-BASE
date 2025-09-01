@@ -39,26 +39,26 @@
 
     <h1 style="margin-bottom:20px; color:var(--brand-blue);">Detalle del Caso</h1>
 
-    <!-- Tarjetas superiores -->
-    <section id="case-details">
+    <!-- Tarjetas APILADAS (una debajo de otra) -->
+    <section id="case-details" style="display:flex; flex-direction:column; gap:16px;">
       <!-- Tarjeta 1: Información del Cliente -->
       <div class="card">
         <h2>Información del Cliente</h2>
-        <div id="cliente-info"></div>
+        <div id="cliente-info"><p>Cargando…</p></div>
       </div>
 
       <!-- Tarjeta 2: Fechas de Corte -->
       <div class="card">
         <h2>Fechas de Corte</h2>
-        <div id="corte-info"></div>
+        <div id="corte-info"><p>Cargando…</p></div>
       </div>
     </section>
 
-    <!-- Actualizaciones -->
+    <!-- Actualizaciones (debajo de las tarjetas) -->
     <section class="card" style="margin-top:24px;">
       <h2>Actualizaciones del Caso</h2>
       <div id="updates-list">
-        <p>No hay actualizaciones registradas.</p>
+        <p>Cargando…</p>
       </div>
     </section>
   </main>
@@ -84,10 +84,10 @@
     const codigo = params.get('codigo') || '';
     const prefijo = codigo ? codigo.substring(0,3) : '';
 
-    // ===== API BASE (Apps Script) =====
+    // ===== API BASE (Apps Script) PEGADA =====
     const API_BASE = "https://script.google.com/macros/s/AKfycbysRSYgaPNDUarclwQn2wAJYWzAabZouvP69yCEwgHs8_43zvnct3vYRsx9TYk-g-Sk/exec";
 
-    // Prefijos → endpoints (sin cambiar tu estructura)
+    // Prefijos → endpoints (manteniendo tu estructura original por prefijo)
     const SHEET_URLS = {
       "343": `${API_BASE}?tab=casos`
     };
@@ -153,10 +153,12 @@
       // Validaciones
       if(!codigo){
         document.getElementById('case-details').innerHTML = '<p>Falta el código en la URL.</p>';
+        document.getElementById('updates-list').innerHTML = '';
         return;
       }
       if(!prefijo || !SHEET_URLS[prefijo] || !SHEET_UPDATES_URLS[prefijo]){
         document.getElementById('case-details').innerHTML = '<p>Prefijo no configurado. Contacte al administrador.</p>';
+        document.getElementById('updates-list').innerHTML = '';
         return;
       }
 
@@ -166,7 +168,9 @@
         const casos = await fetchJSON(SHEET_URLS[prefijo] + glue1 + "codigo=" + encodeURIComponent(codigo));
 
         if(!casos || !casos.length){
-          document.getElementById('case-details').innerHTML = '<p>No se encontró el caso para este código.</p>';
+          document.getElementById('cliente-info').innerHTML = '<p>No se encontró el caso para este código.</p>';
+          document.getElementById('corte-info').innerHTML = '';
+          document.getElementById('updates-list').innerHTML = '';
           return;
         }
         renderCliente(casos[0]);
@@ -178,7 +182,9 @@
 
       }catch(err){
         console.error(err);
-        document.getElementById('case-details').innerHTML = '<p>Error al conectar con la hoja. Intenta más tarde.</p>';
+        document.getElementById('cliente-info').innerHTML = '<p>Error al conectar con la hoja.</p>';
+        document.getElementById('corte-info').innerHTML = '';
+        document.getElementById('updates-list').innerHTML = '';
       }
     }
 
