@@ -5,22 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Detalle del Caso | Soluciones Migratorias</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Header más grueso y logo más grande */
+    header {
+      background-color: #111;
+      height: 140px;              /* más alto */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 0;
+    }
+    header img {
+      height: 100px;              /* logo más grande */
+    }
+  </style>
 </head>
 <body>
-  <!-- Barra superior -->
-  <div class="topbar">
-    <div style="display:flex; align-items:center; gap:12px;">
-      <span>Plataforma exclusiva para clientes de Soluciones Migratorias</span>
-      <div style="position:relative;">
-        <button id="ddBtn" aria-expanded="false" aria-controls="dropdown">Más información ▼</button>
-        <div id="dropdown" class="dropdown">
-          Aquí podrá conocer cómo usar esta plataforma para revisar hitos del proceso, próximas fechas y notas relevantes del equipo legal.
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Header -->
+  <!-- Header (sin barra superior) -->
   <header>
     <img src="logo.png" alt="Soluciones Migratorias - Logo">
   </header>
@@ -73,15 +74,6 @@
 
   <!-- Scripts -->
   <script>
-    // ===== Dropdown superior =====
-    const btn = document.getElementById('ddBtn');
-    const dd  = document.getElementById('dropdown');
-    btn.addEventListener('click', ()=>{
-      const open = dd.style.display === 'block';
-      dd.style.display = open ? 'none' : 'block';
-      btn.setAttribute('aria-expanded', String(!open));
-    });
-
     // ===== Utilidades =====
     const params  = new URLSearchParams(location.search);
     const codigo  = params.get('codigo') || '';
@@ -197,7 +189,7 @@
         return;
       }
 
-      // Si por alguna razón prefijo no mapea, caemos a endpoints base
+      // Si por alguna razón el prefijo no mapea, caemos a endpoints base
       const baseCasos   = SHEET_URLS[prefijo]        || `${API_BASE}?tab=casos`;
       const baseUpdates = SHEET_UPDATES_URLS[prefijo] || `${API_BASE}?tab=actualizaciones`;
 
