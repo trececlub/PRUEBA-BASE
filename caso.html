@@ -6,22 +6,22 @@
   <title>Detalle del Caso | Soluciones Migratorias</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    /* Header más grueso y logo más grande */
+    /* Header más grueso, logo más grande y fondo azul corporativo */
     header {
-      background-color: #111;
-      height: 140px;              /* más alto */
+      background-color: #0a2a43;  /* azul corporativo */
+      height: 140px;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 20px 0;
     }
     header img {
-      height: 100px;              /* logo más grande */
+      height: 100px;  /* logo más grande */
     }
   </style>
 </head>
 <body>
-  <!-- Header (sin barra superior) -->
+  <!-- Header -->
   <header>
     <img src="logo.png" alt="Soluciones Migratorias - Logo">
   </header>
@@ -40,30 +40,25 @@
 
     <h1 style="margin-bottom:20px; color:var(--brand-blue);">Detalle del Caso</h1>
 
-    <!-- Área de estado/errores visible -->
+    <!-- Área de estado/errores -->
     <div id="status" style="display:none; margin:10px 0; border:1px solid #e0b4b4; background:#fff6f6; color:#9f3a38; padding:10px; border-radius:8px;"></div>
 
-    <!-- Tarjetas APILADAS (una debajo de otra) -->
+    <!-- Tarjetas apiladas -->
     <section id="case-details" style="display:flex; flex-direction:column; gap:16px;">
-      <!-- Tarjeta 1: Información del Cliente -->
       <div class="card">
         <h2>Información del Cliente</h2>
         <div id="cliente-info"><p>Cargando…</p></div>
       </div>
-
-      <!-- Tarjeta 2: Fechas de Corte -->
       <div class="card">
         <h2>Fechas de Corte</h2>
         <div id="corte-info"><p>Cargando…</p></div>
       </div>
     </section>
 
-    <!-- Actualizaciones (debajo de las tarjetas) -->
+    <!-- Actualizaciones -->
     <section class="card" style="margin-top:24px;">
       <h2>Actualizaciones del Caso</h2>
-      <div id="updates-list">
-        <p>Cargando…</p>
-      </div>
+      <div id="updates-list"><p>Cargando…</p></div>
     </section>
   </main>
 
@@ -74,7 +69,6 @@
 
   <!-- Scripts -->
   <script>
-    // ===== Utilidades =====
     const params  = new URLSearchParams(location.search);
     const codigo  = params.get('codigo') || '';
     const prefijo = codigo ? codigo.substring(0,3) : '';
@@ -85,18 +79,11 @@
       statusBox.innerHTML = msg;
     }
 
-    // ===== API BASE (Apps Script) =====
-    // OJO: Debe estar publicado "Cualquiera con el vínculo"
     const API_BASE = "https://script.google.com/macros/s/AKfycbysRSYgaPNDUarclwQn2wAJYWzAabZouvP69yCEwgHs8_43zvnct3vYRsx9TYk-g-Sk/exec";
-
-    // Prefijos → endpoints
     const SHEET_URLS = { "343": `${API_BASE}?tab=casos` };
     const SHEET_UPDATES_URLS = { "343": `${API_BASE}?tab=actualizaciones` };
 
-    // ===== Helpers de fecha =====
-    function isDMYString(s){
-      return /^\d{1,2}\/\d{1,2}\/\d{4}$/.test(String(s||'').trim());
-    }
+    function isDMYString(s){ return /^\d{1,2}\/\d{1,2}\/\d{4}$/.test(String(s||'').trim()); }
     function toDateObj(value){
       if (!value) return new Date(0);
       const s = String(value).trim();
@@ -111,29 +98,15 @@
       if (!value) return '';
       if (isDMYString(value)) return String(value).trim();
       const d = toDateObj(value);
-      const day   = String(d.getDate()).padStart(2,'0');
-      const month = String(d.getMonth()+1).padStart(2,'0');
-      const year  = d.getFullYear();
-      return `${day}/${month}/${year}`;
+      return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
     }
 
     async function fetchJSON(url){
-      console.log("[FETCH]", url);
       try{
         const res = await fetch(url, { headers: { 'Accept':'application/json' }});
-        console.log("[STATUS]", res.status, res.statusText);
         const text = await res.text();
-        console.log("[RAW]", text);
-        try {
-          const data = JSON.parse(text);
-          return data;
-        } catch(parseErr){
-          // Respuesta no JSON (p.ej. HTML de login/permiso)
-          showStatus(`<strong>Respuesta no-JSON de la API.</strong><br>Verifica que tu Web App esté publicado como <em>"Cualquiera con el vínculo"</em> y que la URL /exec sea correcta.<br><br><code>${text.substring(0,500)}</code>`);
-          throw parseErr;
-        }
+        return JSON.parse(text);
       }catch(err){
-        console.error("[FETCH ERROR]", err);
         showStatus(`Error conectando con la API: <code>${String(err)}</code>`);
         throw err;
       }
@@ -182,41 +155,25 @@
     }
 
     async function cargarDatos(){
-      // Validaciones
       if(!codigo){
         document.getElementById('case-details').innerHTML = '<p>Falta el código en la URL.</p>';
         document.getElementById('updates-list').innerHTML = '';
         return;
       }
-
-      // Si por alguna razón el prefijo no mapea, caemos a endpoints base
       const baseCasos   = SHEET_URLS[prefijo]        || `${API_BASE}?tab=casos`;
       const baseUpdates = SHEET_UPDATES_URLS[prefijo] || `${API_BASE}?tab=actualizaciones`;
-
       try{
-        const glue1 = baseCasos.includes('?') ? '&' : '?';
-        const urlCasos = baseCasos + glue1 + "codigo=" + encodeURIComponent(codigo);
-        const casos = await fetchJSON(urlCasos);
-
+        const casos = await fetchJSON(baseCasos + "&codigo=" + encodeURIComponent(codigo));
         if(!casos || !casos.length){
           document.getElementById('cliente-info').innerHTML = '<p>No se encontró el caso para este código.</p>';
           document.getElementById('corte-info').innerHTML = '';
           document.getElementById('updates-list').innerHTML = '';
-          showStatus('No hay datos en <code>casos</code> para ese código. Verifica que exista la fila en la pestaña <strong>casos</strong>.');
           return;
         }
         renderCliente(casos[0]);
-
-        const glue2 = baseUpdates.includes('?') ? '&' : '?';
-        const urlUpdates = baseUpdates + glue2 + "codigo=" + encodeURIComponent(codigo);
-        const updates = await fetchJSON(urlUpdates);
+        const updates = await fetchJSON(baseUpdates + "&codigo=" + encodeURIComponent(codigo));
         renderUpdates(updates || []);
-
       }catch(err){
-        console.error(err);
-        if (!statusBox.innerHTML.trim()) {
-          showStatus('Hubo un error conectando con la hoja. Revisa la consola (F12 → Console) para más detalles.');
-        }
         document.getElementById('cliente-info').innerHTML = '<p>Error al conectar con la hoja.</p>';
         document.getElementById('corte-info').innerHTML = '';
         document.getElementById('updates-list').innerHTML = '';
