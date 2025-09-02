@@ -279,7 +279,7 @@ button, .code-inputs input {
 /* ===== Header ===== */
 header {
   background-color: #111;  /* mismo color que ya usas */
-  height: 120px;           /* más alto (antes eran ~80px) */
+  height: 200px;           /* más alto (antes eran ~80px) */
   display: flex;
   align-items: center;
   justify-content: center;
