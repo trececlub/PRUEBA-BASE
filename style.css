@@ -276,4 +276,17 @@ button, .code-inputs input {
   flex-shrink: 1;           /* que el texto pueda encogerse */
   min-width: 0;             /* necesario para que ellipsis funcione en flex */
 }
+/* ===== Header ===== */
+header {
+  background-color: #111;  /* mismo color que ya usas */
+  height: 120px;           /* más alto (antes eran ~80px) */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0;         /* espacio extra arriba/abajo */
+}
+
+header img {
+  height: 70px;            /* aumenta el logo acorde */
+}
 
