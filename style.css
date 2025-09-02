@@ -289,4 +289,20 @@ header {
 header img {
   height: 70px;            /* aumenta el logo acorde */
 }
+.code-inputs {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  width: 100%;
+}
+
+.code-inputs input {
+  flex: 1;                       /* todos iguales */
+  max-width: 40px;               /* ancho fijo máximo */
+  aspect-ratio: 1/1.2;           /* proporción cuadrada alta */
+  font-size: 1.2rem;
+  text-align: center;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+}
 
