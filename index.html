@@ -6,6 +6,19 @@
   <title>Soluciones Migratorias | Consulta de Estado de Caso</title>
   <link rel="stylesheet" href="style.css">
   <style>
+    /* Header más grueso */
+    header {
+      background-color: #111;
+      height: 140px;              /* más alto */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 0;
+    }
+    header img {
+      height: 100px;              /* logo más grande */
+    }
+
     /* Fondo azul y texto blanco en la sección de consulta */
     .intro {
       background-color: #0a2a43; /* azul corporativo */
@@ -19,23 +32,9 @@
   </style>
 </head>
 <body>
- <!-- Barra superior -->
-<div class="topbar">
-  <div style="display:flex; align-items:center; gap:12px;">
-    <span>Clientes Soluciones Migratorias</span>
-    <div style="position:relative;">
-      <button id="ddBtn" aria-expanded="false" aria-controls="dropdown">Más información ▼</button>
-      <div id="dropdown" class="dropdown">
-        Aquí podrá conocer cómo usar esta plataforma para revisar hitos del proceso, próximas fechas y notas relevantes del equipo legal.
-      </div>
-    </div>
-  </div>
-</div>
-
-
-  <!-- Header -->
+  <!-- Header (ya sin barra superior) -->
   <header>
-    <img src="logo2.png" alt="Soluciones Migratorias - Logo">
+    <img src="logo.png" alt="Soluciones Migratorias - Logo">
   </header>
 
   <!-- Barra informativa -->
@@ -105,15 +104,6 @@
 
   <!-- Scripts -->
   <script>
-    // Dropdown
-    const btn = document.getElementById('ddBtn');
-    const dd = document.getElementById('dropdown');
-    btn.addEventListener('click', ()=>{
-      const open = dd.style.display === 'block';
-      dd.style.display = open ? 'none' : 'block';
-      btn.setAttribute('aria-expanded', String(!open));
-    });
-
     // Inputs código
     const inputs = document.querySelectorAll('.code-inputs input');
     const button = document.querySelector('#btnEnviar');
