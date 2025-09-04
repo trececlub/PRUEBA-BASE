@@ -15,9 +15,7 @@
       justify-content: center;
       padding: 20px 0;
     }
-    header img {
-      height: 100px;              /* logo más grande */
-    }
+    header img { height: 100px; }
 
     /* Fondo azul y texto blanco en la sección de consulta */
     .intro {
@@ -29,6 +27,32 @@
     }
     .intro h1 { color: #fff; }
     .intro p { color: #f0f0f0; }
+
+    /* Estilos del input de código */
+    .code-block { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .prefix {
+      background:#eef3fb; border:1px solid var(--border, #dfe3e8); color:#0a2a43;
+      font-weight:700; padding:10px 12px; border-radius:10px; letter-spacing:1px;
+      min-width:56px; text-align:center;
+    }
+    .code-inputs {
+      display: grid; grid-template-columns: repeat(10, 36px); gap: 8px;
+    }
+    .code-inputs input {
+      width: 36px; height: 44px; text-align: center; font-size: 18px; font-weight: 700;
+      border: 1px solid var(--border, #dfe3e8); border-radius: 8px; outline: none;
+    }
+    .code-inputs input:focus { border-color: #0a2a43; box-shadow: 0 0 0 2px rgba(10,42,67,.15); }
+
+    .btn.enabled { opacity: 1; cursor: pointer; }
+    .btn { opacity:.6; cursor:not-allowed; }
+
+    .field-hint a { margin-left: 6px; }
+
+    /* Modal básico */
+    .modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); align-items:center; justify-content:center; padding:16px; }
+    .modal-content { background:#fff; border-radius:14px; padding:24px; max-width:680px; }
+    .btn-accept { margin-top:12px; }
   </style>
 </head>
 <body>
@@ -60,20 +84,27 @@
       <p class="field-hint">
         <strong>Número de referencia</strong>
         <span class="required">*</span>
-        <a href="#">¿Dónde lo encuentro?</a>
+        <span style="margin-left:6px; font-size:12px; color:#666;">Formato: <code>IOE</code> + 10 dígitos (ej. <code>IOE0324567831</code>)</span>
       </p>
-      <div class="code-inputs">
-        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 1">
-        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 2">
-        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 3">
-        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 4">
-        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 5">
-        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 6">
-        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 7">
-        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 8">
-        <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 9">
+
+      <div class="code-block">
+        <span class="prefix" aria-hidden="true">IOE</span>
+        <div class="code-inputs" aria-label="Dígitos del código">
+          <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 1">
+          <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 2">
+          <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 3">
+          <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 4">
+          <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 5">
+          <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 6">
+          <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 7">
+          <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 8">
+          <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 9">
+          <input type="text" maxlength="1" inputmode="numeric" aria-label="Dígito 10">
+        </div>
       </div>
+
       <button id="btnEnviar" class="btn" disabled>CONSULTAR</button>
+
       <p class="info">
         <span aria-hidden="true">ℹ️</span>
         La información mostrada en esta plataforma es referencial. Los documentos y notificaciones
@@ -104,17 +135,21 @@
 
   <!-- Scripts -->
   <script>
-    // Inputs código
+    // ====== Manejo de inputs (10 dígitos) ======
     const inputs = document.querySelectorAll('.code-inputs input');
     const button = document.querySelector('#btnEnviar');
+
     function sanitizeToDigit(el){ el.value = el.value.replace(/\D/g,'').slice(0,1); }
-    function getCode(){ return Array.from(inputs).map(i=>i.value).join(''); }
+    function getDigits(){ return Array.from(inputs).map(i=>i.value).join(''); }
+
     function updateButton(){
-      const code = getCode();
-      const ok = code.length === inputs.length && /^[0-9]{9}$/.test(code);
+      const digits = getDigits();
+      const ok = digits.length === 10 && /^\d{10}$/.test(digits);
       button.disabled = !ok;
       button.classList.toggle('enabled', ok);
     }
+
+    // Rellena progresivo y navegación con teclas
     inputs.forEach((input, i) => {
       input.addEventListener('input', ()=>{
         sanitizeToDigit(input);
@@ -123,23 +158,48 @@
       });
       input.addEventListener('keydown', (e)=>{
         if (e.key === 'Backspace' && !input.value && inputs[i-1]) inputs[i-1].focus();
-      });
-      input.addEventListener('paste', (e)=>{
-        e.preventDefault();
-        const data = (e.clipboardData.getData('text') || '').replace(/\D/g,'').slice(0, inputs.length);
-        data.split('').forEach((ch, idx)=>{ if(inputs[idx]) inputs[idx].value = ch; });
-        if (inputs[data.length-1]) inputs[data.length-1].focus();
-        updateButton();
+        if (/ArrowLeft/i.test(e.key) && inputs[i-1]) inputs[i-1].focus();
+        if (/ArrowRight/i.test(e.key) && inputs[i+1]) inputs[i+1].focus();
       });
     });
+
+    // Pegar: soporta IOE########## o solo ##########
+    document.querySelector('.code-block').addEventListener('paste', (e)=>{
+      const txt = (e.clipboardData?.getData('text') || '').toUpperCase().trim();
+      if (!txt) return;
+      e.preventDefault();
+
+      // Limpieza
+      const alnum = txt.replace(/[^A-Z0-9]/g,'');
+      let digits = '';
+
+      if (/^IOE\d{10}$/.test(alnum)) {
+        digits = alnum.slice(3); // quitar IOE
+      } else {
+        const onlyNums = alnum.replace(/\D/g,'');
+        if (/^\d{10}$/.test(onlyNums)) digits = onlyNums;
+      }
+
+      // Rellenar si es válido
+      if (digits) {
+        inputs.forEach((inp, idx)=> inp.value = digits[idx] || '');
+        if (inputs[digits.length-1]) inputs[digits.length-1].focus();
+        updateButton();
+      }
+    });
+
+    // Click consultar
     button.addEventListener('click', ()=>{
-      const codigo = getCode();
-      if (!/^[0-9]{9}$/.test(codigo)){
-        alert('Número inválido. Deben ser 9 dígitos.');
+      const digits = getDigits();
+      if (!/^\d{10}$/.test(digits)){
+        alert('Número inválido. Deben ser 10 dígitos.');
         return;
       }
-      window.location.href = `caso.html?codigo=${codigo}`;
+      const fullCode = `IOE${digits}`;
+      window.location.href = `caso.html?codigo=${fullCode}`;
     });
+
+    // Modal bienvenida
     document.addEventListener('DOMContentLoaded', () => {
       const modal = document.getElementById('welcomeModal');
       const btnAceptar = document.getElementById('btnAceptar');
