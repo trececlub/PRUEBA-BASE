@@ -15,8 +15,10 @@
       justify-content: center;
       padding: 20px 0;
     }
-    header img {
-      height: 100px;  /* logo más grande */
+    header img { height: 100px; }
+    /* Estado/alerta */
+    #status.success {
+      border:1px solid #b7e1cd; background:#f0fff4; color:#1e4620;
     }
   </style>
 </head>
@@ -69,20 +71,38 @@
 
   <!-- Scripts -->
   <script>
-    const params  = new URLSearchParams(location.search);
-    const codigo  = params.get('codigo') || '';
-    const prefijo = codigo ? codigo.substring(0,3) : '';
+    // ====== Utilidades UI ======
     const statusBox = document.getElementById('status');
-
-    function showStatus(msg) {
+    function showStatus(msg, type='error') {
+      statusBox.classList.remove('success');
       statusBox.style.display = 'block';
       statusBox.innerHTML = msg;
+      if (type === 'success') statusBox.classList.add('success');
     }
 
-    const API_BASE = "https://script.google.com/macros/s/AKfycbysRSYgaPNDUarclwQn2wAJYWzAabZouvP69yCEwgHs8_43zvnct3vYRsx9TYk-g-Sk/exec";
-    const SHEET_URLS = { "343": `${API_BASE}?tab=casos` };
-    const SHEET_UPDATES_URLS = { "343": `${API_BASE}?tab=actualizaciones` };
+    // ====== Lectura y validación del código ======
+    const params = new URLSearchParams(location.search);
 
+    // Normaliza: mayúsculas, sin espacios ni símbolos
+    const rawCodigo = params.get('codigo') || '';
+    const codigo = rawCodigo.toUpperCase().replace(/[^A-Z0-9]/g,'').trim();
+
+    // Regla: IOE + 10 dígitos (total 13)
+    const CODE_RE = /^IOE\d{10}$/;
+
+    // Prefijo para ruteo por hoja (si en el futuro separas por prefijos)
+    const prefijo = 'IOE';
+
+    // ====== Endpoints ======
+    const API_BASE = "https://script.google.com/macros/s/AKfycbysRSYgaPNDUarclwQn2wAJYWzAabZouvP69yCEwgHs8_43zvnct3vYRsx9TYk-g-Sk/exec";
+    const SHEET_URLS = {
+      "IOE": `${API_BASE}?tab=casos`
+    };
+    const SHEET_UPDATES_URLS = {
+      "IOE": `${API_BASE}?tab=actualizaciones`
+    };
+
+    // ====== Helpers de fecha ======
     function isDMYString(s){ return /^\d{1,2}\/\d{1,2}\/\d{4}$/.test(String(s||'').trim()); }
     function toDateObj(value){
       if (!value) return new Date(0);
@@ -98,7 +118,10 @@
       if (!value) return '';
       if (isDMYString(value)) return String(value).trim();
       const d = toDateObj(value);
-      return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
+      const dd = String(d.getDate()).padStart(2,'0');
+      const mm = String(d.getMonth()+1).padStart(2,'0');
+      const yyyy = d.getFullYear();
+      return `${dd}/${mm}/${yyyy}`;
     }
 
     async function fetchJSON(url){
@@ -155,13 +178,25 @@
     }
 
     async function cargarDatos(){
+      // Validación de presencia
       if(!codigo){
-        document.getElementById('case-details').innerHTML = '<p>Falta el código en la URL.</p>';
+        showStatus('Falta el parámetro <strong>codigo</strong> en la URL. Ejemplo: <code>caso.html?codigo=IOE0324567831</code>');
+        document.getElementById('case-details').style.display = 'none';
         document.getElementById('updates-list').innerHTML = '';
         return;
       }
-      const baseCasos   = SHEET_URLS[prefijo]        || `${API_BASE}?tab=casos`;
-      const baseUpdates = SHEET_UPDATES_URLS[prefijo] || `${API_BASE}?tab=actualizaciones`;
+
+      // Validación de formato IOE + 10 dígitos
+      if(!CODE_RE.test(codigo)){
+        showStatus('El código no es válido. Debe tener el formato <strong>IOE</strong> seguido de <strong>10 dígitos</strong>. Ejemplo: <code>IOE0324567831</code>');
+        document.getElementById('case-details').style.display = 'none';
+        document.getElementById('updates-list').innerHTML = '';
+        return;
+      }
+
+      const baseCasos   = SHEET_URLS[prefijo]          || `${API_BASE}?tab=casos`;
+      const baseUpdates = SHEET_UPDATES_URLS[prefijo]  || `${API_BASE}?tab=actualizaciones`;
+
       try{
         const casos = await fetchJSON(baseCasos + "&codigo=" + encodeURIComponent(codigo));
         if(!casos || !casos.length){
@@ -171,8 +206,10 @@
           return;
         }
         renderCliente(casos[0]);
+
         const updates = await fetchJSON(baseUpdates + "&codigo=" + encodeURIComponent(codigo));
         renderUpdates(updates || []);
+        showStatus('Código válido. Información cargada correctamente.', 'success');
       }catch(err){
         document.getElementById('cliente-info').innerHTML = '<p>Error al conectar con la hoja.</p>';
         document.getElementById('corte-info').innerHTML = '';
