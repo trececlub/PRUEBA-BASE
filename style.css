@@ -305,21 +305,23 @@ header img {
   border: 2px solid #ccc;
   border-radius: 6px;
 }
-/* Estado por defecto (error = rojo) */
+
+/* ===== MENSAJES DE ESTADO ===== */
+/* Base: error (rojo) */
 #status {
   border: 1px solid #e0b4b4 !important;
   background: #fff6f6 !important;
   color: #9f3a38 !important;
-  display: none;            /* se muestra solo con JS */
+  display: none;
   margin: 10px 0;
   padding: 10px;
   border-radius: 8px;
 }
 
-/* Estado success = verde */
-#status.success {
+/* Éxito (verde): fuerza sobre estilos inline */
+html body #status.success,
+#status.success[style] {
   border: 1px solid #b7e1cd !important;
   background: #f0fff4 !important;
   color: #1e4620 !important;
 }
-
